@@ -63,53 +63,72 @@ void InitSongList() {
 
     enter_sandman.notes[10].note_name = note_g4;
     enter_sandman.notes[10].note_length = 2*DURATION;
-    /*
-    enter_sandman.notes[11] = note_f4S;
-    enter_sandman.notes[11] = 4*DURATION;
-       enter_sandman.notes[12] = note_c5;
-        enter_sandman.notes[12] = 2*DURATION;
-        enter_sandman.notes[13] = note_c4;
-        enter_sandman.notes[13] = 5*DURATION;
-        enter_sandman.notes[14] = note_c5;
-        enter_sandman.notes[14] = 2*DURATION;
-        enter_sandman.notes[15] = note_e5;
-        enter_sandman.notes[15] = 2*DURATION;
-        enter_sandman.notes[16] = note_g4;
-        enter_sandman.notes[16] = 2*DURATION;
-        enter_sandman.notes[17] = note_f4S;
-        enter_sandman.notes[17] = 4*DURATION;
-        enter_sandman.notes[18] = note_c5;
-        enter_sandman.notes[18] = 2*DURATION;
-        enter_sandman.notes[19] = note_c4;
-        enter_sandman.notes[19] = 5*DURATION;
-        enter_sandman.notes[20] = note_c5;
-        enter_sandman.notes[20] = 2*DURATION;
-        enter_sandman.notes[21] = note_e5;
-        enter_sandman.notes[21] = 2*DURATION;
-        enter_sandman.notes[22] = note_g4;
-        enter_sandman.notes[22] = 2*DURATION;
-        enter_sandman.notes[23] = note_f4S;
-        enter_sandman.notes[23] = 4*DURATION;
-        enter_sandman.notes[24] = note_c5;
-        enter_sandman.notes[24] = 2*DURATION;
-        enter_sandman.notes[25] = note_c4;
-        enter_sandman.notes[25] = 5*DURATION;
-        enter_sandman.notes[26] = note_c5;
-        enter_sandman.notes[26] = 2*DURATION;
-        enter_sandman.notes[27] = note_e5;
-        enter_sandman.notes[27] = 2*DURATION;
-        enter_sandman.notes[28] = note_g4;
-        enter_sandman.notes[28] = 2*DURATION;
-        enter_sandman.notes[29] = note_f4S;
-        enter_sandman.notes[29] = 4*DURATION;
-        enter_sandman.notes[30] = note_c5;
-        enter_sandman.notes[30] = 2*DURATION;
-        enter_sandman.notes[31] = note_silent;
-        enter_sandman.notes[31] = 40*DURATION;
-        enter_sandman.notes[32] = end_note;
-        enter_sandman.notes[32] = 2*DURATION;
 
-*/
+    enter_sandman.notes[11].note_name = note_f4S;
+    enter_sandman.notes[11].note_length = 4*DURATION;
+
+    enter_sandman.notes[12].note_name = note_c5;
+    enter_sandman.notes[12].note_length = 2*DURATION;
+
+    enter_sandman.notes[13].note_name = note_c4;
+    enter_sandman.notes[13].note_length = 5*DURATION;
+
+    enter_sandman.notes[14].note_name = note_c5;
+    enter_sandman.notes[14].note_length = 2*DURATION;
+
+    enter_sandman.notes[15].note_name = note_e5;
+    enter_sandman.notes[15].note_length = 2*DURATION;
+
+    enter_sandman.notes[16].note_name = note_g4;
+    enter_sandman.notes[16].note_length = 2*DURATION;
+
+    enter_sandman.notes[17].note_name = note_f4S;
+    enter_sandman.notes[17].note_length = 4*DURATION;
+
+    enter_sandman.notes[18].note_name = note_c5;
+    enter_sandman.notes[18].note_length = 2*DURATION;
+
+    enter_sandman.notes[19].note_name = note_c4;
+    enter_sandman.notes[19].note_length = 5*DURATION;
+
+    enter_sandman.notes[20].note_name = note_c5;
+    enter_sandman.notes[20].note_length = 2*DURATION;
+
+    enter_sandman.notes[21].note_name = note_e5;
+    enter_sandman.notes[21].note_length = 2*DURATION;
+
+    enter_sandman.notes[22].note_name = note_g4;
+    enter_sandman.notes[22].note_length = 2*DURATION;
+
+    enter_sandman.notes[23].note_name = note_f4S;
+    enter_sandman.notes[23].note_length = 4*DURATION;
+
+    enter_sandman.notes[24].note_name = note_c5;
+    enter_sandman.notes[24].note_length = 2*DURATION;
+
+    enter_sandman.notes[25].note_name = note_c4;
+    enter_sandman.notes[25].note_length = 5*DURATION;
+
+    enter_sandman.notes[26].note_name = note_c5;
+    enter_sandman.notes[26].note_length = 2*DURATION;
+
+    enter_sandman.notes[27].note_name = note_e5;
+    enter_sandman.notes[27].note_length = 2*DURATION;
+
+    enter_sandman.notes[28].note_name = note_g4;
+    enter_sandman.notes[28].note_length = 2*DURATION;
+
+    enter_sandman.notes[29].note_name = note_f4S;
+    enter_sandman.notes[29].note_length = 4*DURATION;
+
+    enter_sandman.notes[30].note_name = note_c5;
+    enter_sandman.notes[30].note_length = 2*DURATION;
+
+    enter_sandman.notes[31].note_name = note_silent;
+    enter_sandman.notes[31].note_length = 40*DURATION;
+
+
+
 
     hokie_fight.note_count = 22;
 
@@ -146,42 +165,41 @@ void InitSongList() {
     hokie_fight.notes[10].note_name = note_f5;
     hokie_fight.notes[10].note_length = DURATION;
 
-    hokie_fight.notes[11] = note_silent;
-    hokie_fight.notes[11] = DURATION;
+    hokie_fight.notes[11].note_name = note_silent;
+    hokie_fight.notes[11].note_length = DURATION;
 
-    hokie_fight.notes[12] = note_f5;
-    hokie_fight.notes[12] = 6*DURATION;
+    hokie_fight.notes[12].note_name = note_f5;
+    hokie_fight.notes[12].note_length = 6*DURATION;
 
-    hokie_fight.notes[13] = note_f5S;
-    hokie_fight.notes[13] = 8*DURATION;
+    hokie_fight.notes[13].note_name = note_f5S;
+    hokie_fight.notes[13].note_length = 8*DURATION;
 
-    hokie_fight.notes[14] = note_g5;
-    hokie_fight.notes[14] = 2*DURATION;
+    hokie_fight.notes[14].note_name = note_g5;
+    hokie_fight.notes[14].note_length = 2*DURATION;
 
-    hokie_fight.notes[15] = note_g4;
-    hokie_fight.notes[15] = 2*DURATION;
+    hokie_fight.notes[15].note_name = note_g4;
+    hokie_fight.notes[15].note_length = 2*DURATION;
 
-    hokie_fight.notes[16] = note_a4;
-    hokie_fight.notes[16] = 2*DURATION;
+    hokie_fight.notes[16].note_name = note_a4;
+    hokie_fight.notes[16].note_length = 2*DURATION;
 
-    hokie_fight.notes[17] = note_c5;
-    hokie_fight.notes[17] = 2*DURATION;
+    hokie_fight.notes[17].note_name = note_c5;
+    hokie_fight.notes[17].note_length = 2*DURATION;
 
-    hokie_fight.notes[18] = note_d5;
-    hokie_fight.notes[18] = 2*DURATION;
+    hokie_fight.notes[18].note_name = note_d5;
+    hokie_fight.notes[18].note_length = 2*DURATION;
 
-    hokie_fight.notes[19] = note_c6;
-    hokie_fight.notes[19] = 10*DURATION;
+    hokie_fight.notes[19].note_name = note_c6;
+    hokie_fight.notes[19].note_length = 10*DURATION;
 
-    hokie_fight.notes[20] = note_silent;
-    hokie_fight.notes[20] = 2*DURATION;
+    hokie_fight.notes[20].note_name = note_silent;
+    hokie_fight.notes[20].note_length = 2*DURATION;
 
-    hokie_fight.notes[21] = note_c6;
-    hokie_fight.notes[21] = DURATION;
+    hokie_fight.notes[21].note_name = note_c6;
+    hokie_fight.notes[21].note_length = DURATION;
 
-    hokie_fight.notes[22] = note_silent;
-    hokie_fight.notes[22] = 40*DURATION;
-
+    hokie_fight.notes[22].note_name = note_silent;
+    hokie_fight.notes[22].note_length = 40*DURATION;
 
 }
 

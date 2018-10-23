@@ -50,6 +50,8 @@ void PlayNote(song_note_t songNote) {
    pwmConfig.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64;
    pwmConfig.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_4;
    pwmConfig.compareOutputMode =  TIMER_A_OUTPUTMODE_RESET_SET;
+
+
    pwmConfig.timerPeriod = SYSTEMCLOCK/64/toneFreq[songNote.note_name];
    pwmConfig.dutyCycle   = pwmConfig.timerPeriod /2;
 

@@ -72,8 +72,8 @@ int main(void)
     InitSound();
   //  playSong();
     InitSongList();
-   // PlaySong(enter_sandman);
-    PlaySong(hokie_fight);
+   //PlaySong(enter_sandman);
+   PlaySong(hokie_fight);
 
 
     while (1)
