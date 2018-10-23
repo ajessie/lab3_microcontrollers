@@ -146,7 +146,7 @@ void InitSongList() {
     hokie_fight.notes[10].note_name = note_f5;
     hokie_fight.notes[10].note_length = DURATION;
 
- /*   hokie_fight.notes[11] = note_silent;
+    hokie_fight.notes[11] = note_silent;
     hokie_fight.notes[11] = DURATION;
 
     hokie_fight.notes[12] = note_f5;
@@ -157,24 +157,32 @@ void InitSongList() {
 
     hokie_fight.notes[14] = note_g5;
     hokie_fight.notes[14] = 2*DURATION;
-        hokie_fight.notes[15] = note_g4;
-        hokie_fight.notes[15] = 2*DURATION;
-        hokie_fight.notes[16] = note_a4;
-        hokie_fight.notes[16] = 2*DURATION;
-        hokie_fight.notes[17] = note_c5;
-        hokie_fight.notes[17] = 2*DURATION;
-        hokie_fight.notes[18] = note_d5;
-        hokie_fight.notes[18] = 2*DURATION;
-        hokie_fight.notes[19] = note_c6;
-        hokie_fight.notes[19] = 10*DURATION;
-        hokie_fight.notes[20] = note_silent;
-        hokie_fight.notes[20] = 2*DURATION;
-        hokie_fight.notes[21] = note_c6;
-        hokie_fight.notes[21] = DURATION;
-        hokie_fight.notes[22] = note_silent;
-        hokie_fight.notes[22] = 40*DURATION;
 
-*/
+    hokie_fight.notes[15] = note_g4;
+    hokie_fight.notes[15] = 2*DURATION;
+
+    hokie_fight.notes[16] = note_a4;
+    hokie_fight.notes[16] = 2*DURATION;
+
+    hokie_fight.notes[17] = note_c5;
+    hokie_fight.notes[17] = 2*DURATION;
+
+    hokie_fight.notes[18] = note_d5;
+    hokie_fight.notes[18] = 2*DURATION;
+
+    hokie_fight.notes[19] = note_c6;
+    hokie_fight.notes[19] = 10*DURATION;
+
+    hokie_fight.notes[20] = note_silent;
+    hokie_fight.notes[20] = 2*DURATION;
+
+    hokie_fight.notes[21] = note_c6;
+    hokie_fight.notes[21] = DURATION;
+
+    hokie_fight.notes[22] = note_silent;
+    hokie_fight.notes[22] = 40*DURATION;
+
+
 }
 
 

@@ -2,7 +2,7 @@
  * song.h
  *
  *  Created on: Oct 23, 2018
- *      Author: Leyla
+ *      Author: Jon Bunting
  */
 
 #ifndef SONG_H_
@@ -16,7 +16,6 @@ typedef struct {
     unsigned int note_count;
     song_note_t  notes[100];
 } song_t;
-
 
 song_t enter_sandman;
 song_t hokie_fight;

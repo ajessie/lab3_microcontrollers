@@ -31,16 +31,19 @@ typedef enum {note_silent,
               note_c6}
 basic_note_t;
 
-// This structure consists of a basic note and its length. Imagine a music sheet, where each note tells you what note it
-// as well as how long it should be played. We call this structure song_note_t, because it contains the information for a note
-// while played in a song: its note name and its duration (length). For example if we have
-// song_note_t myNote = {note_c4, 100}, it means myNote should be played as the note C4 for 100 ms
+/* This structure consists of a basic note and its length. Imagine a music sheet, where each note tells you the type (C4) and its length (quarter-note).
+ * We call this structure song_note_t, because it contains the information for a note in a song. In our structure the length is specified in terms of ms.
+ * For example if we say song_note_t myNote = {note_c4, 100}, it means myNote should be played as the note C4 for 100 ms which is equal to 1/16th note in rhythm.
+ */
 typedef struct {
     basic_note_t  note_name;
     unsigned int  note_length; // note length in ms
 } song_note_t;
 
+// This function configures the pin that drives the buzzer with a PWM
 void InitSound();
+
+// This function generates the PWM that makes the note
 void PlayNote(song_note_t songNote);
 
 
