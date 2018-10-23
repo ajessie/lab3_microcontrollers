@@ -59,6 +59,7 @@ Lab3_starter_main.obj: ../graphics_HAL.h
 Lab3_starter_main.obj: C:/ti/simplelink_msp432p4_sdk_2_20_00_12/source/ti/grlib/grlib.h
 Lab3_starter_main.obj: ../ADC_HAL.h
 Lab3_starter_main.obj: ../sound.h
+Lab3_starter_main.obj: ../song.h
 
 ../Lab3_starter_main.c: 
 C:/ti/simplelink_msp432p4_sdk_2_20_00_12/source/ti/devices/msp432p4xx/driverlib/driverlib.h: 
@@ -119,3 +120,4 @@ C:/ti/simplelink_msp432p4_sdk_2_20_00_12/source/ti/grlib/grlib.h:
 C:/ti/simplelink_msp432p4_sdk_2_20_00_12/source/ti/grlib/grlib.h: 
 ../ADC_HAL.h: 
 ../sound.h: 
+../song.h: 

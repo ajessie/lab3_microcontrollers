@@ -20,39 +20,6 @@ void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed);
 extern song_t enter_sandman;
 extern song_t hokie_fight;
 
-/*
-void playSong()
-{
-    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
-    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
-    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
-    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
-    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
-    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
-    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
-    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
-    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
-    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
-    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
-    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
-    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
-    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
-    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
-    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
-    PlayNote((song_note_t){note_e5,  4*DURATION});   // E5 // 4
-    PlayNote((song_note_t){note_c5,  4*DURATION});   // C5 // 4
-    PlayNote((song_note_t){note_g4,  3*DURATION});   // G4 // 3
-    PlayNote((song_note_t){note_a4,    DURATION});   // A4 // 1
-    PlayNote((song_note_t){note_b4,  2*DURATION});   // B4 // 2
-    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
-    PlayNote((song_note_t){note_d5,  2*DURATION});   // D5 // 2
-    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
-    PlayNote((song_note_t){note_f5,  2*DURATION});   // F5 // 2
-    PlayNote((song_note_t){note_f5S, 2*DURATION});   // F#5 // 2
-    PlayNote((song_note_t){note_g5, 16*DURATION});   // G5 // 16
-}
-*/
-
 int main(void)
 {
     Graphics_Context g_sContext;
@@ -69,12 +36,13 @@ int main(void)
     draw_Base(&g_sContext);
     unsigned vx, vy;
 
+    //TODO: comment out this part once you complete part 3
+    /*
     InitSound();
-  //  playSong();
     InitSongList();
-   PlaySong(enter_sandman);
-   PlaySong(hokie_fight);
-
+    PlaySong(enter_sandman);
+    PlaySong(hokie_fight);
+*/
 
     while (1)
     {
