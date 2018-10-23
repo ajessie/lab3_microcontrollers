@@ -5,6 +5,7 @@
 #include "graphics_HAL.h"
 #include "ADC_HAL.h"
 #include "sound.h"
+#include "song.h"
 
 extern HWTimer_t timer0, timer1;
 
@@ -16,36 +17,41 @@ void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed);
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
 
+extern song_t enter_sandman;
+extern song_t hokie_fight;
+
+/*
 void playSong()
 {
-    PlayNote(note_g4,  2*DURATION);   // G4 // 2
-    PlayNote(note_c5,  2*DURATION);   // C5 // 2
-    PlayNote(note_e5,    DURATION);   // E5 // 1
-    PlayNote(note_c5,    DURATION);   // C5 // 1
-    PlayNote(note_g4,  2*DURATION);   // G4 // 2
-    PlayNote(note_e5,  2*DURATION);   // E5 // 2
-    PlayNote(note_c5,  2*DURATION);   // C5 // 2
-    PlayNote(note_e5,    DURATION);   // E5 // 1
-    PlayNote(note_c5,    DURATION);   // C5 // 1
-    PlayNote(note_g4,  2*DURATION);   // G4 // 2
-    PlayNote(note_e5,  2*DURATION);   // E5 // 2
-    PlayNote(note_c5,  2*DURATION);   // C5 // 2
-    PlayNote(note_e5,    DURATION);   // E5 // 1
-    PlayNote(note_c5,    DURATION);   // C5 // 1
-    PlayNote(note_g4,  2*DURATION);   // G4 // 2
-    PlayNote(note_c5,  2*DURATION);   // C5 // 2
-    PlayNote(note_e5,  4*DURATION);   // E5 // 4
-    PlayNote(note_c5,  4*DURATION);   // C5 // 4
-    PlayNote(note_g4,  3*DURATION);   // G4 // 3
-    PlayNote(note_a4,    DURATION);   // A4 // 1
-    PlayNote(note_b4,  2*DURATION);   // B4 // 2
-    PlayNote(note_c5,  2*DURATION);   // C5 // 2
-    PlayNote(note_d5,  2*DURATION);   // D5 // 2
-    PlayNote(note_e5,  2*DURATION);   // E5 // 2
-    PlayNote(note_f5,  2*DURATION);   // F5 // 2
-    PlayNote(note_fs5, 2*DURATION);   // F#5 // 2
-    PlayNote(note_g5, 16*DURATION);   // G5 // 16
+    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
+    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
+    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
+    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
+    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
+    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
+    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
+    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
+    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
+    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
+    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
+    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
+    PlayNote((song_note_t){note_e5,    DURATION});   // E5 // 1
+    PlayNote((song_note_t){note_c5,    DURATION});   // C5 // 1
+    PlayNote((song_note_t){note_g4,  2*DURATION});   // G4 // 2
+    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
+    PlayNote((song_note_t){note_e5,  4*DURATION});   // E5 // 4
+    PlayNote((song_note_t){note_c5,  4*DURATION});   // C5 // 4
+    PlayNote((song_note_t){note_g4,  3*DURATION});   // G4 // 3
+    PlayNote((song_note_t){note_a4,    DURATION});   // A4 // 1
+    PlayNote((song_note_t){note_b4,  2*DURATION});   // B4 // 2
+    PlayNote((song_note_t){note_c5,  2*DURATION});   // C5 // 2
+    PlayNote((song_note_t){note_d5,  2*DURATION});   // D5 // 2
+    PlayNote((song_note_t){note_e5,  2*DURATION});   // E5 // 2
+    PlayNote((song_note_t){note_f5,  2*DURATION});   // F5 // 2
+    PlayNote((song_note_t){note_f5S, 2*DURATION});   // F#5 // 2
+    PlayNote((song_note_t){note_g5, 16*DURATION});   // G5 // 16
 }
+*/
 
 int main(void)
 {
@@ -64,7 +70,9 @@ int main(void)
     unsigned vx, vy;
 
     InitSound();
-    playSong();
+  //  playSong();
+    InitSongList();
+    PlaySong(enter_sandman);
 
     while (1)
     {

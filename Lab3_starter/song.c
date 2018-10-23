@@ -12,27 +12,17 @@
  * the TI MSP432P4/Educational BoostXL.
  *
  */
-/*
+
 
 #include "sound.h"
 
 //100ms is equivalent to a 1/16th note based on 150BPM (beats per minute)
 #define DURATION 100
-#define STRING_1_LOCATION 0
-#define STRING_2_LOCATION 0
-#define STRING_3_LOCATION 0
-#define STRING_4_LOCATION 0
 
-typedef struct {
-    unsigned string;
-    unsigned position;
-    unsigned time_in_song
-} game_note_t;
 
 typedef struct {
     tnote       *sounds;
     unsigned    *sound_length;
-    game_note_t *song_notes;
 } song_t;
 
 song_t enter_sandman;
@@ -43,8 +33,7 @@ void InitSongList() {
     // ENTER SANDMAN OPENING RIFF
     tnote       e_sounds[33];
     unsigned    e_sound_lengths[33];
-    game_note_t e_notes[10];
-    enter_sandman = (song_t){e_sounds, e_sound_lengths, e_notes};
+    enter_sandman = (song_t){e_sounds, e_sound_lengths};
 
     enter_sandman.sounds[0] = note_silent;
     enter_sandman.sound_length[0] = 40*DURATION;
@@ -117,28 +106,7 @@ void InitSongList() {
     // TECH TRIUMPH ENDING
     tnote       h_sounds[24];
     unsigned    h_sound_lengths[24];
-    game_note_t h_notes[18];
-    hokie_fight   = (song_t){h_sounds, h_sound_lengths, h_notes};
-
-    hokie_fight.song_notes[0]  = (note_t){ STRING_1_LOCATION,0,30};
-    hokie_fight.song_notes[1]  = (note_t){ STRING_2_LOCATION,0,35};
-    hokie_fight.song_notes[2]  = (note_t){ STRING_3_LOCATION,0,40};
-    hokie_fight.song_notes[3]  = (note_t){ STRING_1_LOCATION,0,45};
-    hokie_fight.song_notes[4]  = (note_t){ STRING_2_LOCATION,0,50};
-    hokie_fight.song_notes[5]  = (note_t){ STRING_2_LOCATION,0,65};
-    hokie_fight.song_notes[6]  = (note_t){ STRING_3_LOCATION,0,70};
-    hokie_fight.song_notes[7]  = (note_t){ STRING_1_LOCATION,0,85};
-    hokie_fight.song_notes[8]  = (note_t){ STRING_4_LOCATION,0,90};
-    hokie_fight.song_notes[9]  = (note_t){ STRING_1_LOCATION,0,105};
-    hokie_fight.song_notes[10] = (note_t){ STRING_1_LOCATION,0,125};
-    hokie_fight.song_notes[11] = (note_t){ STRING_1_LOCATION,0,130};
-    hokie_fight.song_notes[12] = (note_t){ STRING_2_LOCATION,0,135};
-    hokie_fight.song_notes[13] = (note_t){ STRING_3_LOCATION,0,140};
-    hokie_fight.song_notes[14] = (note_t){ STRING_4_LOCATION,0,145};
-    hokie_fight.song_notes[15] = (note_t){ STRING_4_LOCATION,0,150};
-    hokie_fight.song_notes[16] = (note_t){ STRING_4_LOCATION,0,183};
-    hokie_fight.song_notes[17] = (note_t){ 0,0,0 };
-
+    hokie_fight   = (song_t){h_sounds, h_sound_lengths};
 
     hokie_fight.sounds[0] = note_silent;
     hokie_fight.sound_length[0] = 40*DURATION;
@@ -192,27 +160,6 @@ void InitSongList() {
 
 }
 
-bool PlaySong(song_t song, bool reset, bool silent) {
-    static int i = 0;
-    bool song_over = false;
-
-    if ( song.sounds[i] == end_note )
-        song_over = true;
-
-    if ( song_over || reset ) {
-        i = 0;
-        PlaySound(note_silent, 10, true);
-        return song_over;
-    }
-    if ( silent ) {
-        PlaySound(note_silent, 10, true);
-        return song_over;
-    }
-    if ( !PlaySound(song.sounds[i], song.sound_length[i], false) ) {
-        i++;
-    }
-    return song_over;
-}
 
 
 #endif /* SONG_LIST_H_ */
