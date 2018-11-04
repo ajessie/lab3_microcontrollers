@@ -9,14 +9,8 @@
 #include "Lab3.h"
 
 extern HWTimer_t timer0, timer1;
+Graphics_Context g_sContext;
 
-
-// This function initializes all the peripherals except graphics
-void initialize();
-void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed);
-void Splash();
-void drawDisplay();
-void howToPlay();
 
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
@@ -28,8 +22,78 @@ extern song_t enter_sandman;
 extern song_t hokie_fight;
 Graphics_Context g_sContext;
 
+void rock (){
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
+    char Title[22] = "sdvsfv";
+    Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+}
+
+void Splash (){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
+    char Name[22] = "Jessie Acfalle";
+    Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 0, 64, true);
+    char Game[22] = "Guitar Hero";
+    Graphics_drawString(&g_sContext, (int8_t *) Game, -1, 0, 80, true);
+}
+
+void Menu (Screen *action){
+    Graphics_clearDisplay(&g_sContext);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    char Title[22] = ">How to Play";
+    Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+    char Play[22]  = "Lets Rock!";
+    Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+    char Scores[22] = "Leader Board";
+    Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+    action->display = learn;
+    action->pos ++;
+}
+
+void howToPlay(Screen *action){
+    Graphics_clearDisplay(&g_sContext);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    char info[100] = "Hit the right";
+    char info3[100] = "buttons at the";
+    char info2[22] = "right time to";
+    char info4[12] = "score!";
+    Graphics_drawString(&g_sContext, (int8_t *) info, -1, 0, 20, true);
+    Graphics_drawString(&g_sContext, (int8_t *) info3, -1, 0, 40, true);
+    Graphics_drawString(&g_sContext, (int8_t *) info2, -1, 0, 64, true);
+    Graphics_drawString(&g_sContext, (int8_t *) info4, -1, 0, 80, true);
+}
+
+void Down(Screen *action){
+    Graphics_clearDisplay(&g_sContext);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    char Title2[22] = "How to Play";
+    Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
+    char Play2[22] = ">Lets Rock!";
+    Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
+    char Scores2[22] = "Leader Board";
+    Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+    action->pos++;
+    action->display = play;
+}
+
+void Down2(Screen *action){
+    Graphics_clearDisplay(&g_sContext);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    char Title2[22] = "How to Play";
+    Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
+    char Play2[22] = "Lets Rock!";
+    Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
+    char Scores2[22] = ">Leader Board";
+    Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+}
+
 int main(void)
 {
+
     Screen action;
     action.pos = 0;
     int three_count = 0;
@@ -39,116 +103,58 @@ int main(void)
     Graphics_Context g_sContext;
 
     InitGraphics(&g_sContext);
-
     initialize();
 
     while(1){
-    if (Timer32_getValue(TIMER32_0_BASE == 0))
+    if (Timer32_getValue(TIMER32_0_BASE == 0)){
         three_count++;
-    getSampleJoyStick(&vx, &vy);
-    bool joyStickPushedDown = false;
-    bool joyStickPushedUp = false;
-
-    if (vy < DOWN_THRESHOLD)
-    {
-      joyStickPushedDown = true;
-      down++;
-
-
-      if (down == 1){
-          Graphics_clearDisplay(&g_sContext);
-          Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-          char Title2[22] = "How to Play";
-          Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
-          char Play2[22] = ">Lets Rock!";
-          Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
-          char Scores2[22] = "Leader Board";
-          Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
-          action.pos++;
-
-
-      }
-      else if (down == 2)
-      {
-          Graphics_clearDisplay(&g_sContext);
-          Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-          char Title2[22] = "How to Play";
-          Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
-          char Play2[22] = "Lets Rock!";
-          Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
-          char Scores2[22] = ">Leader Board";
-          Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
-      }
     }
-
-    if(three_count < THREE_SEC){
-    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
-    char Name[22] = "Jessie Acfalle";
-    Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 10, 64, true);
-    char Game[22] = "Guitar Hero";
-    Graphics_drawString(&g_sContext, (int8_t *) Game, -1, 10, 80, true);
+    if (three_count < THREE_SEC){
+        Splash();
     }
 
     else if (three_count == THREE_SEC){
-        Graphics_clearDisplay(&g_sContext);
-        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-        char Title[22] = ">How to Play";
-        Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
-        char Play[22]  = "Lets Rock!";
-        Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
-        char Scores[22] = "Leader Board";
-        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
-        action.display = learn;
-        action.pos ++;
+            Menu(&action);
         }
+
+    getSampleJoyStick(&vx, &vy);
+    bool joyStickPushedDown = false;
+    bool joyStickPushedUp = false;
+    if (vy < DOWN_THRESHOLD)
+    {
+
+      joyStickPushedDown = true;
+      down++;
+    }
+      if (down == 1 && joyStickPushedDown == true){
+              Down(&action);
+      }
+
+      else if (down == 2)
+      {
+        Down2(&action);
+      }
 
     if (BoosterpackTopButton_pressed()){
         if (action.pos == 1 && action.display == learn){
+            howToPlay(&action);
+        }
+        else if (action.pos == 2 && action.display == play){
             Graphics_clearDisplay(&g_sContext);
-            Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+            rock();
+
             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-            char info[100] = "Hit the correct";
-            char info3[100] = "buttons at the";
-            char info2[22] = "right time to";
-            char info4[12] = "score!";
-            Graphics_drawString(&g_sContext, (int8_t *) info, -1, 0, 20, true);
-            Graphics_drawString(&g_sContext, (int8_t *) info3, -1, 0, 40, true);
-            Graphics_drawString(&g_sContext, (int8_t *) info2, -1, 0, 64, true);
-            Graphics_drawString(&g_sContext, (int8_t *) info4, -1, 0, 80, true);
+            char Title[22] = "sdvsfv";
+            Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
         }
     }
         else if (BoosterpackBottomButton_pressed()){
-                Graphics_clearDisplay(&g_sContext);
-                Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-                char Title[22] = ">How to Play";
-                Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
-                char Play[22]  = "Lets Rock!";
-                Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
-                char Scores[22] = "Leader Board";
-                Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+                Menu(&action);
                 action.display = learn;
         }
 
     }
  }
-
-
-
-
-//    button_t LauchpadLeftButton;
-//    initButton(&LauchpadLeftButton, GPIO_PORT_P1, GPIO_PIN1, &timer0);
-//
-//    button_t LauchpadRightButton;
-//    initButton(&LauchpadRightButton, GPIO_PORT_P1, GPIO_PIN4, &timer0);
-
-//    draw_Base(&g_sContext);
-//    unsigned vx, vy;
-
     //TODO: comment out this part once you complete part 3
     /*
     InitSound();
@@ -203,6 +209,14 @@ void initialize()
 //    char Name[22] = "Jessie Acfalle";
 //    Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 1, 100, true);
 //
+//}
+
+//void rock (){
+//
+//    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+//    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+//    char Title[22] = "sdvsfv";
+//    Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
 //}
 
 // This FSM has two inputs each of them the FSM if a button has been pushed or not
