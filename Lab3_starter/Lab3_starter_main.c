@@ -14,11 +14,13 @@ extern HWTimer_t timer0, timer1;
 void initialize();
 void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed);
 void Splash();
+void drawDisplay();
 
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
 #define THREE_SEC 40
 #define ONE_SEC 48000000
+#define DOWN_THRESHOLD  0x1000
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
@@ -27,6 +29,8 @@ Graphics_Context g_sContext;
 int main(void)
 {
     int three_count = 0;
+    int down = 0;
+    unsigned vx, vy;
 
     Graphics_Context g_sContext;
 
@@ -37,6 +41,27 @@ int main(void)
     while(1){
     if (Timer32_getValue(TIMER32_0_BASE == 0))
         three_count++;
+    getSampleJoyStick(&vx, &vy);
+    bool joyStickPushedDown = false;
+    bool joyStickPushedUp = false;
+    drawXY(&g_sContext, vx, vy);
+
+    if (vx < DOWN_THRESHOLD)
+    {
+      joyStickPushedDown = true;
+      down++;
+      if (down == 1){
+          Graphics_clearDisplay(&g_sContext);
+          Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+          char Title2[22] = "How to Play";
+          Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
+          char Play2[22] = ">Lets Rock!";
+          Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
+          char Scores2[22] = "Leader Board";
+          Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+      }
+    }
 
     if(three_count < THREE_SEC){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -57,7 +82,6 @@ int main(void)
         Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
         char Scores[22] = "Leader Board";
         Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
-
     }
  }
 
@@ -71,7 +95,7 @@ int main(void)
     initButton(&LauchpadRightButton, GPIO_PORT_P1, GPIO_PIN4, &timer0);
 
 //    draw_Base(&g_sContext);
-    unsigned vx, vy;
+//    unsigned vx, vy;
 
     //TODO: comment out this part once you complete part 3
     /*
@@ -117,7 +141,9 @@ int main(void)
 //    }
 }
 
+void drawDisplay(){
 
+}
 void initialize()
 {
     // stop the watchdog timer
