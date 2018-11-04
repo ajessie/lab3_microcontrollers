@@ -50,7 +50,6 @@ void Menu (Screen *action){
     char Scores[22] = "Leader Board";
     Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
     action->display = learn;
-    action->posy ++;
 }
 
 void howToPlay(Screen *action){
@@ -211,7 +210,7 @@ int main(void)
 
 
     if (BoosterpackTopButton_pressed()){
-        if (action.pos == 1 && action.display == learn){
+        if (action.display == learn){
             howToPlay(&action);
         }
         else if (action.pos == 2 && action.display == play){
