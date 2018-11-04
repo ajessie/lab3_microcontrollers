@@ -20,7 +20,7 @@ void drawDisplay();
 #define DURATION 100
 #define THREE_SEC 40
 #define ONE_SEC 48000000
-#define DOWN_THRESHOLD  0x1000
+#define DOWN_THRESHOLD  300
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
@@ -46,10 +46,12 @@ int main(void)
     bool joyStickPushedUp = false;
     drawXY(&g_sContext, vx, vy);
 
-    if (vx < DOWN_THRESHOLD)
+    if (vy < DOWN_THRESHOLD)
     {
       joyStickPushedDown = true;
       down++;
+
+
       if (down == 1){
           Graphics_clearDisplay(&g_sContext);
           Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
@@ -60,8 +62,24 @@ int main(void)
           Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
           char Scores2[22] = "Leader Board";
           Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+
+
+      }
+      else if (down == 2)
+      {
+          Graphics_clearDisplay(&g_sContext);
+          Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+          char Title2[22] = "How to Play";
+          Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
+          char Play2[22] = "Lets Rock!";
+          Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
+          char Scores2[22] = ">Leader Board";
+          Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
       }
     }
+
+
 
     if(three_count < THREE_SEC){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
