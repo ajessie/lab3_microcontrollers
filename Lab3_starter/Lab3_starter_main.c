@@ -17,6 +17,7 @@ Graphics_Context g_sContext;
 #define THREE_SEC 40
 #define ONE_SEC 48000000
 #define DOWN_THRESHOLD  300
+#define UP_THRESHOLD    0x1000
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
@@ -48,7 +49,7 @@ void Menu (Screen *action){
     char Scores[22] = "Leader Board";
     Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
     action->display = learn;
-    action->pos ++;
+    action->posy ++;
 }
 
 void howToPlay(Screen *action){
@@ -75,7 +76,7 @@ void Down(Screen *action){
     Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
     char Scores2[22] = "Leader Board";
     Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
-    action->pos++;
+    action->posy++;
     action->display = play;
 }
 
@@ -89,6 +90,38 @@ void Down2(Screen *action){
     Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
     char Scores2[22] = ">Leader Board";
     Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+    action->posy++;
+    action->display = scores;
+}
+
+void Up(Screen *action){
+    if(action->display == play){
+        Graphics_clearDisplay(&g_sContext);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        char Title[22] = ">How to Play";
+        Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+        char Play[22]  = "Lets Rock!";
+        Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+        char Scores[22] = "Leader Board";
+        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        action->display = learn;
+        action->posy = 0;
+    }
+
+    else if (action->display == scores){
+        Graphics_clearDisplay(&g_sContext);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        char Title[22] = "How to Play";
+        Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+        char Play[22]  = ">Lets Rock!";
+        Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+        char Scores[22] = "Leader Board";
+        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        action->posy = 0;
+    }
+
 }
 
 int main(void)
@@ -98,6 +131,7 @@ int main(void)
     action.pos = 0;
     int three_count = 0;
     int down = 0;
+    int up = 0;
     unsigned vx, vy;
 
     Graphics_Context g_sContext;
@@ -108,7 +142,7 @@ int main(void)
     while(1){
     if (Timer32_getValue(TIMER32_0_BASE == 0)){
         three_count++;
-    }
+
     if (three_count < THREE_SEC){
         Splash();
     }
@@ -116,24 +150,41 @@ int main(void)
     else if (three_count == THREE_SEC){
             Menu(&action);
         }
-
+    }
     getSampleJoyStick(&vx, &vy);
     bool joyStickPushedDown = false;
     bool joyStickPushedUp = false;
+
     if (vy < DOWN_THRESHOLD)
     {
 
       joyStickPushedDown = true;
       down++;
+      vy = 0;
+    }
+
+    else if (vy > 15000){
+       joyStickPushedUp = true;
+        up++;
+        vy = 0;
     }
       if (down == 1 && joyStickPushedDown == true){
               Down(&action);
       }
 
-      else if (down == 2)
+      else if (down == 2 && joyStickPushedDown == true)
       {
         Down2(&action);
+     }
+
+      else if (up == 1  &&  joyStickPushedUp == true){
+          Up(&action);
       }
+
+      else if (up == 2 &&  joyStickPushedUp == true){
+          Up(&action);
+      }
+
 
     if (BoosterpackTopButton_pressed()){
         if (action.pos == 1 && action.display == learn){
