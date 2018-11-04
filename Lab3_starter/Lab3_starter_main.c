@@ -22,6 +22,7 @@ Graphics_Context g_sContext;
 extern song_t enter_sandman;
 extern song_t hokie_fight;
 Graphics_Context g_sContext;
+static int down = 0;
 
 void rock (){
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
@@ -95,7 +96,7 @@ void Down2(Screen *action){
 }
 
 void Up(Screen *action){
-    if(action->display == play){
+    if(action->display == learn){
         Graphics_clearDisplay(&g_sContext);
         Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -105,7 +106,21 @@ void Up(Screen *action){
         Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
         char Scores[22] = "Leader Board";
         Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
-        action->display = learn;
+        action->posy = 0;
+        down = 0;
+    }
+
+    else if (action->display == play){
+        Graphics_clearDisplay(&g_sContext);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        char Title[22] = ">How to Play";
+        Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+        char Play[22]  = "Lets Rock!";
+        Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+        char Scores[22] = "Leader Board";
+        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        down = 0;
         action->posy = 0;
     }
 
@@ -120,6 +135,7 @@ void Up(Screen *action){
         char Scores[22] = "Leader Board";
         Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
         action->posy = 0;
+        down = 0;
     }
 
 }
@@ -130,7 +146,6 @@ int main(void)
     Screen action;
     action.pos = 0;
     int three_count = 0;
-    int down = 0;
     int up = 0;
     unsigned vx, vy;
 
@@ -178,11 +193,20 @@ int main(void)
      }
 
       else if (up == 1  &&  joyStickPushedUp == true){
+          action.display = play;
           Up(&action);
       }
 
       else if (up == 2 &&  joyStickPushedUp == true){
+          action.display = learn ;
           Up(&action);
+
+      }
+
+      else if (up == 3 && joyStickPushedUp == true){
+          action.display = scores;
+          Up(&action);
+          up = 0;
       }
 
 
@@ -251,24 +275,6 @@ void initialize()
     initJoyStick();
     startADC();
 }
-
-//void Splash(){
-//    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-//
-//    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
-//
-//    char Name[22] = "Jessie Acfalle";
-//    Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 1, 100, true);
-//
-//}
-
-//void rock (){
-//
-//    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-//    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-//    char Title[22] = "sdvsfv";
-//    Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
-//}
 
 // This FSM has two inputs each of them the FSM if a button has been pushed or not
 // The FSM has three states: Red, Green, Blue. The initial state is Red
