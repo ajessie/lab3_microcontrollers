@@ -40,13 +40,10 @@ int main(void)
 
     if(three_count < THREE_SEC){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
-
     char Name[22] = "Jessie Acfalle";
     Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 10, 64, true);
     char Game[22] = "Guitar Hero";
-
     Graphics_drawString(&g_sContext, (int8_t *) Game, -1, 10, 80, true);
     }
 
@@ -58,6 +55,9 @@ int main(void)
         Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
         char Play[22]  = "Lets Rock!";
         Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+        char Scores[22] = "Leader Board";
+        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+
     }
  }
 
