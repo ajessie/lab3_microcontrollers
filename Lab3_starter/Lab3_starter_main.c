@@ -6,6 +6,7 @@
 #include "ADC_HAL.h"
 #include "sound.h"
 #include "song.h"
+#include "Lab3.h"
 
 extern HWTimer_t timer0, timer1;
 
@@ -15,6 +16,7 @@ void initialize();
 void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed);
 void Splash();
 void drawDisplay();
+void howToPlay();
 
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
@@ -28,6 +30,8 @@ Graphics_Context g_sContext;
 
 int main(void)
 {
+    Screen action;
+    action.pos = 0;
     int three_count = 0;
     int down = 0;
     unsigned vx, vy;
@@ -44,7 +48,6 @@ int main(void)
     getSampleJoyStick(&vx, &vy);
     bool joyStickPushedDown = false;
     bool joyStickPushedUp = false;
-    drawXY(&g_sContext, vx, vy);
 
     if (vy < DOWN_THRESHOLD)
     {
@@ -62,6 +65,7 @@ int main(void)
           Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
           char Scores2[22] = "Leader Board";
           Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
+          action.pos++;
 
 
       }
@@ -78,8 +82,6 @@ int main(void)
           Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
       }
     }
-
-
 
     if(three_count < THREE_SEC){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -100,17 +102,49 @@ int main(void)
         Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
         char Scores[22] = "Leader Board";
         Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        action.display = learn;
+        action.pos ++;
+        }
+
+    if (BoosterpackTopButton_pressed()){
+        if (action.pos == 1 && action.display == learn){
+            Graphics_clearDisplay(&g_sContext);
+            Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+            char info[100] = "Hit the correct";
+            char info3[100] = "buttons at the";
+            char info2[22] = "right time to";
+            char info4[12] = "score!";
+            Graphics_drawString(&g_sContext, (int8_t *) info, -1, 0, 20, true);
+            Graphics_drawString(&g_sContext, (int8_t *) info3, -1, 0, 40, true);
+            Graphics_drawString(&g_sContext, (int8_t *) info2, -1, 0, 64, true);
+            Graphics_drawString(&g_sContext, (int8_t *) info4, -1, 0, 80, true);
+        }
+    }
+        else if (BoosterpackBottomButton_pressed()){
+                Graphics_clearDisplay(&g_sContext);
+                Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                char Title[22] = ">How to Play";
+                Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+                char Play[22]  = "Lets Rock!";
+                Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+                char Scores[22] = "Leader Board";
+                Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+                action.display = learn;
+        }
+
     }
  }
 
 
 
 
-    button_t LauchpadLeftButton;
-    initButton(&LauchpadLeftButton, GPIO_PORT_P1, GPIO_PIN1, &timer0);
-
-    button_t LauchpadRightButton;
-    initButton(&LauchpadRightButton, GPIO_PORT_P1, GPIO_PIN4, &timer0);
+//    button_t LauchpadLeftButton;
+//    initButton(&LauchpadLeftButton, GPIO_PORT_P1, GPIO_PIN1, &timer0);
+//
+//    button_t LauchpadRightButton;
+//    initButton(&LauchpadRightButton, GPIO_PORT_P1, GPIO_PIN4, &timer0);
 
 //    draw_Base(&g_sContext);
 //    unsigned vx, vy;
@@ -124,44 +158,6 @@ int main(void)
 */
 
 
-//    while (1)
-//    {
-//        bool leftButtonPushed = ButtonPushed(&LauchpadLeftButton);
-//        bool rightButtonPushed = ButtonPushed(&LauchpadRightButton);
-//
-//        if (LaunchpadLeftButton_pressed())
-//            turnOn_LaunchpadLED1();
-//        else
-//            turnOff_LaunchpadLED1();
-//
-//        if (LaunchpadRightButton_pressed())
-//            turnOn_LaunchpadLED2_red();
-//        else
-//            turnOff_LaunchpadLED2_red();
-//
-//
-//        ModifyLEDColor(leftButtonPushed,rightButtonPushed);
-//        MoveCircle(&g_sContext, leftButtonPushed,rightButtonPushed);
-//
-//        getSampleJoyStick(&vx, &vy);
-//        bool joyStickPushedtoRight = false;
-//        bool joyStickPushedtoLeft = false;
-//        drawXY(&g_sContext, vx, vy);
-//
-//        if (vx < LEFT_THRESHOLD)
-//        {
-//            joyStickPushedtoLeft = true;
-//        }
-//
-//        ModifyLEDColor(joyStickPushedtoLeft,joyStickPushedtoRight);
-//        MoveCircle(&g_sContext, joyStickPushedtoLeft,joyStickPushedtoRight);
-//
-//    }
-}
-
-void drawDisplay(){
-
-}
 void initialize()
 {
     // stop the watchdog timer
