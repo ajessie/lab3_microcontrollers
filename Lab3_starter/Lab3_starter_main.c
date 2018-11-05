@@ -24,15 +24,27 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
+void DrawFrets(Screen *action){
+    Graphics_clearDisplay(&g_sContext);
+
+
+}
+
 void rock (){
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
-    char Title[22] = "sdvsfv";
-    Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+    Graphics_clearDisplay(&g_sContext);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+
+
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    char string[12] = "fjvnskfjvn";
+    Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 80, true);
+
+
 }
 
 void Splash (){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SEA_GREEN);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     char Name[22] = "Jessie Acfalle";
     Graphics_drawString(&g_sContext, (int8_t *) Name, -1, 0, 64, true);
     char Game[22] = "Guitar Hero";
@@ -41,7 +53,7 @@ void Splash (){
 
 void Menu (Screen *action){
     Graphics_clearDisplay(&g_sContext);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char Title[22] = ">How to Play";
     Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
@@ -54,7 +66,7 @@ void Menu (Screen *action){
 
 void howToPlay(Screen *action){
     Graphics_clearDisplay(&g_sContext);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char info[100] = "Hit the right";
     char info3[100] = "buttons at the";
@@ -68,7 +80,7 @@ void howToPlay(Screen *action){
 
 void Down(Screen *action){
     Graphics_clearDisplay(&g_sContext);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char Title2[22] = "How to Play";
     Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
@@ -82,7 +94,7 @@ void Down(Screen *action){
 
 void Down2(Screen *action){
     Graphics_clearDisplay(&g_sContext);
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char Title2[22] = "How to Play";
     Graphics_drawString(&g_sContext, (int8_t *) Title2, -1, 10, 64, true);
@@ -97,7 +109,7 @@ void Down2(Screen *action){
 void Up(Screen *action){
     if(action->display == learn){
         Graphics_clearDisplay(&g_sContext);
-        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
         char Title[22] = ">How to Play";
         Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
@@ -111,7 +123,7 @@ void Up(Screen *action){
 
     else if (action->display == play){
         Graphics_clearDisplay(&g_sContext);
-        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
         char Title[22] = ">How to Play";
         Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
@@ -125,7 +137,7 @@ void Up(Screen *action){
 
     else if (action->display == scores){
         Graphics_clearDisplay(&g_sContext);
-        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
         char Title[22] = "How to Play";
         Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
@@ -133,6 +145,7 @@ void Up(Screen *action){
         Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
         char Scores[22] = "Leader Board";
         Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        action->display = play;;
         action->posy = 0;
         down = 0;
     }
@@ -213,13 +226,8 @@ int main(void)
         if (action.display == learn){
             howToPlay(&action);
         }
-        else if (action.pos == 2 && action.display == play){
-            Graphics_clearDisplay(&g_sContext);
+        else if (action.display == play){
             rock();
-
-            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-            char Title[22] = "sdvsfv";
-            Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
         }
     }
         else if (BoosterpackBottomButton_pressed()){
