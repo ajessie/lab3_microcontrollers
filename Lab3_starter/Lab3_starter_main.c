@@ -24,6 +24,34 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
+void DrawGreenCircle(){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+    Graphics_fillCircle(&g_sContext, 30, 116, 6);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+    Graphics_fillCircle(&g_sContext, 30, 116, 4);
+}
+
+void DrawRedCircle(){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+    Graphics_fillCircle(&g_sContext, 50, 116, 6);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+    Graphics_fillCircle(&g_sContext, 50, 116, 4);
+}
+
+void DrawYellowCircle(){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
+    Graphics_fillCircle(&g_sContext, 70, 116, 6);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+    Graphics_fillCircle(&g_sContext, 70, 116, 4);
+}
+
+void DrawBlueCircle(){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+    Graphics_fillCircle(&g_sContext, 90, 116, 6);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+    Graphics_fillCircle(&g_sContext, 90, 116, 4);
+}
+
 void DrawVerticalOne(){
     uint16_t x_pos = 30, y_pos = 20;
     int i;
@@ -140,6 +168,10 @@ void rock (){
     DrawVerticalTwo();
     DrawVerticalThree();
     DrawVerticalFour();
+    DrawGreenCircle();
+    DrawRedCircle();
+    DrawYellowCircle();
+    DrawBlueCircle();
 
 }
 
