@@ -24,10 +24,98 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
-void DrawFrets(Screen *action){
-    Graphics_clearDisplay(&g_sContext);
+void DrawVerticalOne(){
+    uint16_t x_pos = 30, y_pos = 20;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
 
+}
 
+void DrawVerticalTwo(){
+    uint16_t x_pos = 50, y_pos = 20;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+
+}
+
+void DrawVerticalThree(){
+    uint16_t x_pos = 70, y_pos = 20;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+
+}
+
+void DrawVerticalFour(){
+    uint16_t x_pos = 90, y_pos = 20;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+
+}
+
+void DrawFirstFret(){
+    uint16_t x_pos = 6, y_pos = 50;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        x_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+}
+
+void DrawSecondFret(){
+    uint16_t x_pos = 6, y_pos = 70;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        x_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+}
+
+void DrawThirdFret(){
+    uint16_t x_pos = 6, y_pos = 90;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        x_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+}
+
+void DrawFourthFret(){
+    uint16_t x_pos = 6, y_pos = 110;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        x_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+}
+
+void DrawRightSide(){
+    uint16_t x_pos = 122, y_pos = 20;
+    int i;
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
 }
 
 void rock (){
@@ -36,9 +124,22 @@ void rock (){
 
 
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    char string[12] = "fjvnskfjvn";
-    Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 80, true);
+    uint16_t x_pos = 6, y_pos = 20;
+    int i;
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
 
+    DrawRightSide();
+    DrawFirstFret();
+    DrawSecondFret();
+    DrawThirdFret();
+    DrawFourthFret();
+    DrawVerticalOne();
+    DrawVerticalTwo();
+    DrawVerticalThree();
+    DrawVerticalFour();
 
 }
 
