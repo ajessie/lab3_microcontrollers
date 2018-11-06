@@ -11,18 +11,49 @@
 extern HWTimer_t timer0, timer1;
 Graphics_Context g_sContext;
 
-
+// 100ms in us unit is 100,000
+#define T100MS_IN_US 100000
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
 #define THREE_SEC 40
 #define ONE_SEC 48000000
 #define DOWN_THRESHOLD  300
 #define UP_THRESHOLD    0x1000
+#define BALL_Y_STEP 10                   // The ball moves in y direction 10 pixesl per step
+#define BALL_TIME_STEP T100MS_IN_US      // We update the location of the ball evey 100 ms
+// The above two numbers result in 10/100ms = 10/0.1s = 100 pixel/sec movement for the ball
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
+
+void MoveCircleDown(){
+    int count = 0;
+    static int y = 25;
+    static int x = 30;
+    if (Timer32_getValue(TIMER32_0_BASE == 0)){
+            count++;
+    for (count = 0; count < 6; count++){
+        if (count != 0){
+
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+        Graphics_fillCircle(&g_sContext, x, y, 6);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        Graphics_fillCircle(&g_sContext, x, y, 4);
+
+
+        if ( y < 116){
+            y = y + BALL_Y_STEP;
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+            Graphics_fillCircle(&g_sContext, x, y, 6);
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+            Graphics_fillCircle(&g_sContext, x, y, 4);
+        }
+      }
+    }
+  }
+}
 
 void DrawGreenCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
@@ -163,6 +194,8 @@ void rock (){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char string[22] = "Score:";
     Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 2, true);
+    bool moveToLeft;
+    bool moveToRight;
 
     DrawLeftSide();
     DrawRightSide();
@@ -178,6 +211,7 @@ void rock (){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
+    MoveCircleDown();
 
 }
 
