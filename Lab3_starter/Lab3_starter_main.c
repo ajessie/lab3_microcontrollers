@@ -136,6 +136,17 @@ void DrawFourthFret(){
     }
 }
 
+void DrawLeftSide(){
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    uint16_t x_pos = 6, y_pos = 20;
+    int i;
+    for (i =0; i < 114; i++){
+        y_pos++;
+        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
+    }
+
+}
+
 void DrawRightSide(){
     uint16_t x_pos = 122, y_pos = 20;
     int i;
@@ -149,16 +160,11 @@ void DrawRightSide(){
 void rock (){
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-
-
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    uint16_t x_pos = 6, y_pos = 20;
-    int i;
-    for (i =0; i < 114; i++){
-        y_pos++;
-        Graphics_drawPixel(&g_sContext, x_pos, y_pos);
-    }
+    char string[22] = "Score:";
+    Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 2, true);
 
+    DrawLeftSide();
     DrawRightSide();
     DrawFirstFret();
     DrawSecondFret();
