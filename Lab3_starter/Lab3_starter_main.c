@@ -7,6 +7,7 @@
 #include "sound.h"
 #include "song.h"
 #include "Lab3.h"
+#include "Timer32_HAL.h"
 
 extern HWTimer_t timer0, timer1;
 Graphics_Context g_sContext;
@@ -28,32 +29,76 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
-void MoveCircleDown(){
-    int count = 0;
-    static int y = 25;
-    static int x = 30;
-    if (Timer32_getValue(TIMER32_0_BASE == 0)){
-            count++;
-    for (count = 0; count < 6; count++){
-        if (count != 0){
+//void MoveCircleDown(){
+//    int count = 0;
+//    static int y = 25;
+//    static int x = 30;
+//    if (Timer32_getValue(TIMER32_0_BASE == 0)){
+//            count++;
+//    for (count = 0; count < 6; count++){
+//        if (count != 0){
+//
+//        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+//        Graphics_fillCircle(&g_sContext, x, y, 6);
+//        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+//        Graphics_fillCircle(&g_sContext, x, y, 4);
+//
+//
+//        if ( y < 116){
+//            y = y + BALL_Y_STEP;
+//            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+//            Graphics_fillCircle(&g_sContext, x, y, 6);
+//            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+//            Graphics_fillCircle(&g_sContext, x, y, 4);
+//        }
+//      }
+//    }
+//  }
+//}
+ void MoveCircleDown(){
+     static unsigned int x = 30;
+     static unsigned int y = 20;
+     static bool moveToDown = true;
 
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-        Graphics_fillCircle(&g_sContext, x, y, 6);
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-        Graphics_fillCircle(&g_sContext, x, y, 4);
+     static unsigned int moveCount = 0;
+     int8_t string[4];
 
+     static OneShotSWTimer_t yMoveTimer;
 
-        if ( y < 116){
-            y = y + BALL_Y_STEP;
-            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-            Graphics_fillCircle(&g_sContext, x, y, 6);
-            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-            Graphics_fillCircle(&g_sContext, x, y, 4);
-        }
-      }
-    }
-  }
-}
+     static bool init = true;
+     if (init)
+     {
+         //
+         InitOneShotSWTimer(&yMoveTimer,
+                            &timer0,
+                            BALL_TIME_STEP);
+         StartOneShotSWTimer(&yMoveTimer);
+
+         init = false;
+     }
+     if (OneShotSWTimerExpired(&yMoveTimer))
+     {
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+         Graphics_fillCircle(&g_sContext, x, y, 10);
+
+         StartOneShotSWTimer(&yMoveTimer);
+         if (moveToDown)
+         {
+             y = y + BALL_Y_STEP;
+             if (y > 80)
+                 moveToDown = false;
+         }
+         else
+         {
+             y = y - BALL_Y_STEP;
+             if (y < 50)
+                 moveToDown = true;
+         }
+
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
+         Graphics_fillCircle(&g_sContext, x, y, 10);
+     }
+ }
 
 void DrawGreenCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
@@ -194,9 +239,10 @@ void rock (){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     char string[22] = "Score:";
     Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 2, true);
-    bool moveToLeft;
-    bool moveToRight;
+    static OneShotSWTimer_t yMoveTimer;
 
+    InitOneShotSWTimer(&yMoveTimer, &timer0, 500000);
+    StartOneShotSWTimer(&yMoveTimer);
     DrawLeftSide();
     DrawRightSide();
     DrawFirstFret();
@@ -211,7 +257,14 @@ void rock (){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
-    MoveCircleDown();
+//    MoveCircleDown();
+
+    while(1){
+        if (OneShotSWTimerExpired(&yMoveTimer)){
+            MoveCircleDown();
+            StartOneShotSWTimer(&yMoveTimer);
+        }
+    }
 
 }
 
@@ -333,11 +386,21 @@ int main(void)
     int three_count = 0;
     int up = 0;
     unsigned vx, vy;
+//    static unsigned int x = 63;
+//    static unsigned int y = 63;
+//    static bool moveToDown = true;
+//
+//    static unsigned int moveCount = 0;
+//    int8_t string[4];
+
+    static OneShotSWTimer_t yMoveTimer;
 
     Graphics_Context g_sContext;
 
     InitGraphics(&g_sContext);
     initialize();
+    InitOneShotSWTimer(&yMoveTimer, &timer0, 500000);
+    StartOneShotSWTimer(&yMoveTimer);
 
     while(1){
     if (Timer32_getValue(TIMER32_0_BASE == 0)){
@@ -401,13 +464,13 @@ int main(void)
         }
         else if (action.display == play){
             rock();
+
         }
     }
         else if (BoosterpackBottomButton_pressed()){
                 Menu(&action);
                 action.display = learn;
         }
-
     }
  }
     //TODO: comment out this part once you complete part 3
