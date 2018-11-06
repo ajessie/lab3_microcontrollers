@@ -68,6 +68,7 @@ static int down = 0;
              y1 = y1 + BALL_Y_STEP;
              y2 = y2 + BALL_Y_STEP;
              y3 = y3 + BALL_Y_STEP;
+             y4 = y4 + BALL_Y_STEP;
              Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
              Graphics_drawLine(&g_sContext,x1, y1, 30, 20);
              if (circle_count == 2){
@@ -77,6 +78,7 @@ static int down = 0;
                  circle_count = 0;
                  red_circle++;
                  yellow_circle++;
+                 blue_circle++;
 
                  if (red_circle == 2){
                      Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -87,17 +89,26 @@ static int down = 0;
                      yellow_circle++;
                  }
 
-                 if (yellow_circle == 4){
+                 if (yellow_circle == 1){
                      Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
                      Graphics_drawLine(&g_sContext,x3, y3, 70, 20);
                      Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
                      Graphics_drawCircle(&g_sContext, x3, y3, 4);
                      yellow_circle = 0;
+                     blue_circle++;
+                 }
+
+                 if (blue_circle == 2){
+                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                     Graphics_drawLine(&g_sContext,x4, y4, 90, 20);
+                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+                     Graphics_drawCircle(&g_sContext, x4, y4, 4);
+                     blue_circle = 0;
                  }
              }
 
-             if (y1 == 100 || y2 == 100 || y3 == 100 || y4 == 100)
-                 moveToDown = false;
+//             if (y1 == 100 || y2 == 100 || y3 == 100 || y4 == 100)
+//                 moveToDown = false;
          }
          else
          {
