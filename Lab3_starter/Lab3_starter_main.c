@@ -13,7 +13,7 @@ extern HWTimer_t timer0, timer1;
 Graphics_Context g_sContext;
 
 // 100ms in us unit is 100,000
-#define T100MS_IN_US 100000
+#define T2000MS_IN_US 2000
 #define LEFT_THRESHOLD  0x1000
 #define DURATION 100
 #define THREE_SEC 40
@@ -21,7 +21,7 @@ Graphics_Context g_sContext;
 #define DOWN_THRESHOLD  300
 #define UP_THRESHOLD    0x1000
 #define BALL_Y_STEP 10                   // The ball moves in y direction 10 pixesl per step
-#define BALL_TIME_STEP T100MS_IN_US      // We update the location of the ball evey 100 ms
+#define BALL_TIME_STEP T2000MS_IN_US      // We update the location of the ball evey 100 ms
 // The above two numbers result in 10/100ms = 10/0.1s = 100 pixel/sec movement for the ball
 
 extern song_t enter_sandman;
@@ -29,39 +29,11 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
-//void MoveCircleDown(){
-//    int count = 0;
-//    static int y = 25;
-//    static int x = 30;
-//    if (Timer32_getValue(TIMER32_0_BASE == 0)){
-//            count++;
-//    for (count = 0; count < 6; count++){
-//        if (count != 0){
-//
-//        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-//        Graphics_fillCircle(&g_sContext, x, y, 6);
-//        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-//        Graphics_fillCircle(&g_sContext, x, y, 4);
-//
-//
-//        if ( y < 116){
-//            y = y + BALL_Y_STEP;
-//            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-//            Graphics_fillCircle(&g_sContext, x, y, 6);
-//            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-//            Graphics_fillCircle(&g_sContext, x, y, 4);
-//        }
-//      }
-//    }
-//  }
-//}
  void MoveCircleDown(){
      static unsigned int x = 30;
      static unsigned int y = 20;
      static bool moveToDown = true;
-
-     static unsigned int moveCount = 0;
-     int8_t string[4];
+     static int circle_count = 0;
 
      static OneShotSWTimer_t yMoveTimer;
 
@@ -78,25 +50,33 @@ static int down = 0;
      }
      if (OneShotSWTimerExpired(&yMoveTimer))
      {
-         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-         Graphics_fillCircle(&g_sContext, x, y, 10);
+         circle_count++;
 
          StartOneShotSWTimer(&yMoveTimer);
          if (moveToDown)
          {
              y = y + BALL_Y_STEP;
-             if (y > 80)
+             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+             Graphics_drawLine(&g_sContext,x, y, 30, 20);
+             if (circle_count == 4){
+
+                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+                 Graphics_drawCircle(&g_sContext, x, y, 4);
+                 circle_count = 0;
+             }
+
+             if (y == 116)
                  moveToDown = false;
          }
          else
          {
-             y = y - BALL_Y_STEP;
-             if (y < 50)
+             y = 116;
+             if (y < 116)
                  moveToDown = true;
          }
 
-         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
-         Graphics_fillCircle(&g_sContext, x, y, 10);
+//         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+//         Graphics_drawCircle(&g_sContext, x, y, 4);
      }
  }
 
@@ -257,8 +237,6 @@ void rock (){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
-//    MoveCircleDown();
-
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
             MoveCircleDown();
@@ -399,7 +377,7 @@ int main(void)
 
     InitGraphics(&g_sContext);
     initialize();
-    InitOneShotSWTimer(&yMoveTimer, &timer0, 500000);
+    InitOneShotSWTimer(&yMoveTimer, &timer0, 1000000);
     StartOneShotSWTimer(&yMoveTimer);
 
     while(1){
