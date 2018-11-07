@@ -31,7 +31,7 @@ static int down = 0;
 static unsigned vx, vy;
 
 void SongChoice(Screen *action){
-    int up = 0;
+    int up2 = 0;
     int down2 = 0;
     bool joyStickPushedDown = false;
     bool joyStickPushedUp = false;
@@ -58,11 +58,16 @@ void SongChoice(Screen *action){
 
            else if (vy > 15000){
               joyStickPushedUp = true;
-               up++;
+               up2++;
                vy = 0;
            }
 
            if (down2 == 0 && BoosterpackTopButton_pressed()){
+               action->display = play;
+               rock(action);
+           }
+
+           else if (down2 == 1 && BoosterpackTopButton_pressed()){
                action->display = play;
                rock(action);
            }
@@ -77,6 +82,18 @@ void SongChoice(Screen *action){
                Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 20, true);
                Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
                down2 = 0;
+           }
+
+           else if (up2 == 1 && joyStickPushedUp == true){
+               Graphics_clearDisplay(&g_sContext);
+               char text[16] = "Pick a song:";
+               Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+               Graphics_drawString(&g_sContext, (int8_t *) text, -1, 0, 2, true);
+               char string[22] = ">Enter Sandman";
+               char string2[12] = "Hokie Song";
+               Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 20, true);
+               Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
+               up2 = 0;
            }
      }
 }
