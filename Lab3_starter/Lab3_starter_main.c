@@ -29,7 +29,7 @@ extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 
- void MoveCircleDown(){
+ void MoveCircleDown(Screen *action){
      static unsigned int x1 = 30;
      static unsigned int x2 = 50;
      static unsigned int x3 = 70;
@@ -107,47 +107,61 @@ static int down = 0;
                  }
              }
 
-//             if (y1 == 100 || y2 == 100 || y3 == 100 || y4 == 100)
-//                 moveToDown = false;
+             if ((y1 == 110) || (y2 == 110) || (y3 == 110) || (y4 == 110)){
+                 moveToDown = false;
+                 action->display = endGame;
+                 EndGame(action);
+             }
          }
          else
          {
-             y1 = 100;
-             y2 = 100;
-             y3 = 100;
-             y4 = 100;
-             if (y1 < 100 || y2 <100 || y3 <100 || y4<100)
+
+             if (y1 < 110 || y2 <110 || y3 <110 || y4<110)
                  moveToDown = true;
+
          }
      }
  }
 
+// void EndGame(Screen *action){
+//
+//     char string [22] = "You Lose!";
+//     Graphics_clearDisplay(&g_sContext);
+//     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+//     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+//     Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 64, true);
+//
+//     }
+//
+//
+// }
+
 void DrawGreenCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-    Graphics_fillCircle(&g_sContext, 30, 116, 6);
+    Graphics_fillCircle(&g_sContext, 30, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-    Graphics_fillCircle(&g_sContext, 30, 116, 4);
+    Graphics_fillCircle(&g_sContext, 30, 110, 4);
 }
 
 void DrawRedCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-    Graphics_fillCircle(&g_sContext, 50, 116, 6);
+    Graphics_fillCircle(&g_sContext, 50, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-    Graphics_fillCircle(&g_sContext, 50, 116, 4);
+    Graphics_fillCircle(&g_sContext, 50, 110, 4);
 }
 
 void DrawYellowCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
-    Graphics_fillCircle(&g_sContext, 70, 116, 6);
+    Graphics_fillCircle(&g_sContext, 70, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-    Graphics_fillCircle(&g_sContext, 70, 116, 4);
+    Graphics_fillCircle(&g_sContext, 70, 110, 4);
 }
 
 void DrawBlueCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-    Graphics_fillCircle(&g_sContext, 90, 116, 6);
+    Graphics_fillCircle(&g_sContext, 90, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-    Graphics_fillCircle(&g_sContext, 90, 116, 4);
+    Graphics_fillCircle(&g_sContext, 90, 110, 4);
 }
 
 void DrawVerticalOne(){
@@ -255,7 +269,7 @@ void DrawRightSide(){
     }
 }
 
-void rock (){
+void rock (Screen *action){
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -281,11 +295,20 @@ void rock (){
     DrawBlueCircle();
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
-            MoveCircleDown();
+            MoveCircleDown(action);
             StartOneShotSWTimer(&yMoveTimer);
         }
     }
 
+}
+
+void EndGame(Screen *action){
+        Graphics_clearDisplay(&g_sContext);
+        char string[22] = "you lose!";
+        char string2[22] = "Play again?";
+        Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 50, true);
+        Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 68, true);
+        action->display = endGame;
 }
 
 void Splash (){
@@ -405,13 +428,7 @@ int main(void)
     action.pos = 0;
     int three_count = 0;
     int up = 0;
-    unsigned vx, vy;
-//    static unsigned int x = 63;
-//    static unsigned int y = 63;
-//    static bool moveToDown = true;
-//
-//    static unsigned int moveCount = 0;
-//    int8_t string[4];
+    static unsigned vx, vy;
 
     static OneShotSWTimer_t yMoveTimer;
 
@@ -483,13 +500,16 @@ int main(void)
             howToPlay(&action);
         }
         else if (action.display == play){
-            rock();
+            rock(&action);
 
         }
     }
-        else if (BoosterpackBottomButton_pressed()){
-                Menu(&action);
-                action.display = learn;
+    else if (BoosterpackBottomButton_pressed()){
+           Menu(&action);
+           action.display = learn;
+
+           if (action.display == endGame)
+               Menu(&action);
         }
     }
  }
