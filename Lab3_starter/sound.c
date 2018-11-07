@@ -18,8 +18,8 @@ extern HWTimer_t timer0;
 // TODO: Choose the right port and pin for the buzzer. This will allow the Timer_A to drive the buzzer
 void InitSound() {
     GPIO_setAsPeripheralModuleFunctionOutputPin(
-            GPIO_PORT_P6,
-            GPIO_PIN2,
+            GPIO_PORT_P2,
+            GPIO_PIN7,
             GPIO_PRIMARY_MODULE_FUNCTION);
 }
 
