@@ -28,6 +28,58 @@ extern song_t enter_sandman;
 extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
+static unsigned vx, vy;
+
+void SongChoice(Screen *action){
+    int up = 0;
+    int down2 = 0;
+    bool joyStickPushedDown = false;
+    bool joyStickPushedUp = false;
+    Graphics_clearDisplay(&g_sContext);
+    char text[16] = "Pick a song:";
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_drawString(&g_sContext, (int8_t *) text, -1, 0, 2, true);
+    char string[22] = ">Enter Sandman";
+    char string2[12] = "Hokie Song";
+    Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 20, true);
+    Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
+
+    while(!BoosterpackTopButton_pressed())
+    {
+           getSampleJoyStick(&vx, &vy);
+
+           if (vy < DOWN_THRESHOLD)
+           {
+
+             joyStickPushedDown = true;
+             down2++;
+             vy = 0;
+           }
+
+           else if (vy > 15000){
+              joyStickPushedUp = true;
+               up++;
+               vy = 0;
+           }
+
+           if (down2 == 0 && BoosterpackTopButton_pressed()){
+               action->display = play;
+               rock(action);
+           }
+
+           else  if (down2 == 1 && joyStickPushedDown == true){
+               Graphics_clearDisplay(&g_sContext);
+               char text[16] = "Pick a song:";
+               Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+               Graphics_drawString(&g_sContext, (int8_t *) text, -1, 0, 2, true);
+               char string[20] = "Enter Sandman";
+               char string2[30] = ">Hokie Song";
+               Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 20, true);
+               Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
+               down2 = 0;
+           }
+     }
+}
 
  void MoveCircleDown(Screen *action){
      static menu display = learn;
@@ -39,7 +91,6 @@ static int down = 0;
      static unsigned int y2 = 20;
      static unsigned int y3 = 20;
      static unsigned int y4 = 20;
-     static unsigned int score = 0;
 
      static unsigned vx, vy;
      static bool moveToDown = true;
@@ -59,7 +110,6 @@ static int down = 0;
      static bool init = true;
      if (init)
      {
-         //
          InitOneShotSWTimer(&yMoveTimer,
                             &timer0,
                             BALL_TIME_STEP);
@@ -91,7 +141,7 @@ static int down = 0;
 
                  Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
                  Graphics_drawCircle(&g_sContext, x1, y1, 4);
-                 circle_count = 0;
+                 //circle_count = 0;
                  red_circle++;
                  yellow_circle++;
                  blue_circle++;
@@ -125,33 +175,23 @@ static int down = 0;
 
              if (joyStickPushedtoLeft == true && y1 == 110){
                  action->score++;
+                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+                 Graphics_fillCircle(&g_sContext, x1, y1, 4);
+                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                 Graphics_fillCircle(&g_sContext, x1, y1, 2);
+                 circle_count = 0;
+                 y1 = 20;
                  Point(action);
                  if (joyStickPushedtoLeft && y1 == 110)
                      moveToDown = false;
              }
          }
 
-         else if (moveToDown == false)
+         else {
+             action->lose++;
+             if (action->lose == 3)
              EndGame(action);
-
-//         else
-//         {
-//            action->display = endGame;
-//            EndGame(action);
-//
-//         }
-//         else
-//         {
-//             action->display = endGame;
-//             EndGame(action);
-//             Menu(action);
-//
-//             if (y1 < 110 || y2 <110 || y3 <110 || y4<110)
-//                 moveToDown = true;
-//
-//         }
-
-
+         }
      }
  }
 void Point(Screen *action){
@@ -301,7 +341,6 @@ void rock (Screen *action){
     char string[22] = "Score:";
     Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 2, true);
     static OneShotSWTimer_t yMoveTimer;
-
     InitOneShotSWTimer(&yMoveTimer, &timer0, 500000);
     StartOneShotSWTimer(&yMoveTimer);
     DrawLeftSide();
@@ -318,8 +357,8 @@ void rock (Screen *action){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
-    PlaySong(enter_sandman);
-    PlaySong(hokie_fight);
+//    PlaySong(enter_sandman);
+//    PlaySong(hokie_fight);
 
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
@@ -385,8 +424,7 @@ void Down(Screen *action){
     Graphics_drawString(&g_sContext, (int8_t *) Play2, -1, 10, 80, true);
     char Scores2[22] = "Leader Board";
     Graphics_drawString(&g_sContext, (int8_t *) Scores2, -1, 10, 100, true);
-    action->posy++;
-    action->display = play;
+    action->display = decision;
 }
 
 void Down2(Screen *action){
@@ -418,7 +456,7 @@ void Up(Screen *action){
         down = 0;
     }
 
-    else if (action->display == play){
+    else if (action->display == decision){
         Graphics_clearDisplay(&g_sContext);
         Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -470,7 +508,7 @@ int main(void)
     action.pos = 0;
     int three_count = 0;
     int up = 0;
-    static unsigned vx, vy;
+//    static unsigned vx, vy;
     static int x,y;
 
     static OneShotSWTimer_t yMoveTimer;
@@ -527,7 +565,7 @@ int main(void)
      }
 
       else if (up == 1  &&  joyStickPushedUp == true){
-          action.display = play;
+          action.display = decision;
           Up(&action);
       }
 
@@ -551,8 +589,8 @@ int main(void)
 //            EndGame(&action);
 //        }
 
-        else if (action.display == play){
-            rock(&action);
+        else if (action.display == decision){
+            SongChoice(&action);
         }
     }
     else if (BoosterpackBottomButton_pressed()){
