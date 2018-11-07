@@ -30,6 +30,7 @@ Graphics_Context g_sContext;
 static int down = 0;
 
  void MoveCircleDown(Screen *action){
+     static menu display = learn;
      static unsigned int x1 = 30;
      static unsigned int x2 = 50;
      static unsigned int x3 = 70;
@@ -38,7 +39,9 @@ static int down = 0;
      static unsigned int y2 = 20;
      static unsigned int y3 = 20;
      static unsigned int y4 = 20;
+     static unsigned int score = 0;
 
+     static unsigned vx, vy;
      static bool moveToDown = true;
      static int circle_count = 0;
      static int red_circle = 0;
@@ -46,6 +49,10 @@ static int down = 0;
      static int yellow_circle = 0;
 
      static OneShotSWTimer_t yMoveTimer;
+
+     getSampleJoyStick(&vx, &vy);
+     bool joyStickPushedtoRight = false;
+     bool joyStickPushedtoLeft = false;
 
      static bool init = true;
      if (init)
@@ -58,6 +65,13 @@ static int down = 0;
 
          init = false;
      }
+
+     if (vx < LEFT_THRESHOLD)
+     {
+         joyStickPushedtoLeft = true;
+     }
+
+
      if (OneShotSWTimerExpired(&yMoveTimer))
      {
          circle_count++;
@@ -107,34 +121,43 @@ static int down = 0;
                  }
              }
 
-             if ((y1 == 110) || (y2 == 110) || (y3 == 110) || (y4 == 110)){
-                 moveToDown = false;
-                 action->display = endGame;
-                 EndGame(action);
+             if (joyStickPushedtoLeft == true && y1 == 110){
+                 action->score++;
+                 Point(action);
+                 if (joyStickPushedtoLeft && y1 == 110)
+                     moveToDown = false;
              }
          }
-         else
-         {
 
-             if (y1 < 110 || y2 <110 || y3 <110 || y4<110)
-                 moveToDown = true;
+         else if (moveToDown == false)
+             EndGame(action);
 
-         }
+//         else
+//         {
+//            action->display = endGame;
+//            EndGame(action);
+//
+//         }
+//         else
+//         {
+//             action->display = endGame;
+//             EndGame(action);
+//             Menu(action);
+//
+//             if (y1 < 110 || y2 <110 || y3 <110 || y4<110)
+//                 moveToDown = true;
+//
+//         }
+
+
      }
  }
-
-// void EndGame(Screen *action){
-//
-//     char string [22] = "You Lose!";
-//     Graphics_clearDisplay(&g_sContext);
-//     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-//     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-//     Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 64, true);
-//
-//     }
-//
-//
-// }
+void Point(Screen *action){
+    char text[16] = "";
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    sprintf(text, "%u", action->score);
+    Graphics_drawString(&g_sContext, (int8_t *) text, -1, 100, 2, true);
+}
 
 void DrawGreenCircle(){
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
@@ -305,7 +328,7 @@ void rock (Screen *action){
 void EndGame(Screen *action){
         Graphics_clearDisplay(&g_sContext);
         char string[22] = "you lose!";
-        char string2[22] = "Play again?";
+        char string2[22] = "Reset to play!";
         Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 50, true);
         Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 68, true);
         action->display = endGame;
@@ -419,6 +442,20 @@ void Up(Screen *action){
         down = 0;
     }
 
+    else if (action->display == endGame){
+        Graphics_clearDisplay(&g_sContext);
+        Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        char Title[22] = ">How to Play";
+        Graphics_drawString(&g_sContext, (int8_t *) Title, -1, 10, 64, true);
+        char Play[22]  = "Lets Rock!";
+        Graphics_drawString(&g_sContext, (int8_t *) Play, -1, 10, 80, true);
+        char Scores[22] = "Leader Board";
+        Graphics_drawString(&g_sContext, (int8_t *) Scores, -1, 10, 100, true);
+        down = 0;
+        action->posy = 0;
+    }
+
 }
 
 int main(void)
@@ -429,6 +466,7 @@ int main(void)
     int three_count = 0;
     int up = 0;
     static unsigned vx, vy;
+    static int x,y;
 
     static OneShotSWTimer_t yMoveTimer;
 
@@ -494,25 +532,26 @@ int main(void)
           up = 0;
       }
 
-
     if (BoosterpackTopButton_pressed()){
         if (action.display == learn){
             howToPlay(&action);
         }
+        else if (action.display == endGame){
+            EndGame(&action);
+        }
+
         else if (action.display == play){
             rock(&action);
-
         }
     }
     else if (BoosterpackBottomButton_pressed()){
+        if (action.display == learn){
            Menu(&action);
            action.display = learn;
-
-           if (action.display == endGame)
-               Menu(&action);
         }
     }
- }
+  }
+}
     //TODO: comment out this part once you complete part 3
     /*
     InitSound();
