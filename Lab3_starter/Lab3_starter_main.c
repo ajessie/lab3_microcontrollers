@@ -52,7 +52,9 @@ static int down = 0;
 
      getSampleJoyStick(&vx, &vy);
      bool joyStickPushedtoRight = false;
-     bool joyStickPushedtoLeft = false;
+     bool joyStickPushedtoLeft  = false;
+     bool joyStickPushedDown    = false;
+     bool joyStickPushedUp      = false;
 
      static bool init = true;
      if (init)
@@ -316,6 +318,9 @@ void rock (Screen *action){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
+    PlaySong(enter_sandman);
+    PlaySong(hokie_fight);
+
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
             MoveCircleDown(action);
@@ -477,6 +482,12 @@ int main(void)
     InitOneShotSWTimer(&yMoveTimer, &timer0, 1000000);
     StartOneShotSWTimer(&yMoveTimer);
 
+    InitSound();
+    InitSongList();
+//    PlaySong(enter_sandman);
+//    PlaySong(hokie_fight);
+
+
     while(1){
     if (Timer32_getValue(TIMER32_0_BASE == 0)){
         three_count++;
@@ -536,9 +547,9 @@ int main(void)
         if (action.display == learn){
             howToPlay(&action);
         }
-        else if (action.display == endGame){
-            EndGame(&action);
-        }
+//        else if (action.display == endGame){
+//            EndGame(&action);
+//        }
 
         else if (action.display == play){
             rock(&action);
@@ -552,15 +563,6 @@ int main(void)
     }
   }
 }
-    //TODO: comment out this part once you complete part 3
-    /*
-    InitSound();
-    InitSongList();
-    PlaySong(enter_sandman);
-    PlaySong(hokie_fight);
-*/
-
-
 void initialize()
 {
     // stop the watchdog timer
