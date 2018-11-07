@@ -16,12 +16,10 @@
 extern HWTimer_t timer0;
 
 // TODO: Choose the right port and pin for the buzzer. This will allow the Timer_A to drive the buzzer
-// Currently, Port 1 and Pin 0 are chosen here, but they may or may not be correct. They are simply place holders.
-// If you ctrl+click, you will see other options
 void InitSound() {
     GPIO_setAsPeripheralModuleFunctionOutputPin(
-            GPIO_PORT_P1,
-            GPIO_PIN0,
+            GPIO_PORT_P6,
+            GPIO_PIN2,
             GPIO_PRIMARY_MODULE_FUNCTION);
 }
 
@@ -88,13 +86,13 @@ void PlayNote(song_note_t songNote) {
 
     // TODO: The clock divider, you need to choose this flag. Currently this value is set to 1. If you hold ctrl key and click on the TIMER_A_CLOCKSOURCE_DIVIDER_1 macro
     // you will see the other options, there are multiple options between 1 and 64 (not all numbers are possible)
-    pwmConfig.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+    pwmConfig.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64;
 
     // TODO: The Timer_A register connected to the speaker. Currently, this is set to TIMER_A_CAPTURECOMPARE_REGISTER_0, which could or could not be the right answer.
     // You need to find this information from the combination of the BoosterPack and Launchpad user guides.
     // The printed quick guide can be the best place to find this information. If you hold the ctrl key and click on TIMER_A_CAPTURECOMPARE_REGISTER_0, you will see
     // the other options. (Refer to HW6 and how you drove RGB colors)
-    pwmConfig.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_0;
+    pwmConfig.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_4;
 
     // TODO: See if this mode suits you. If not, change it to something else. Ctrl+click can show you other modes. Refer to the user guide for details.
     pwmConfig.compareOutputMode =  TIMER_A_OUTPUTMODE_RESET_SET;
@@ -102,11 +100,11 @@ void PlayNote(song_note_t songNote) {
     // TODO: Choose the period of the PWM in terms of number of counter cycles. Currently, it is set to SYSTEMCLOCK which is 48M
     // You need to generate a different PWM for each note, pay attention to the clock divider you chose earlier.
     // Hint: you need to incorporate toneFreq to complete this part.
-    pwmConfig.timerPeriod = SYSTEMCLOCK;
+    pwmConfig.timerPeriod = SYSTEMCLOCK/64/toneFreq[songNote];
 
     // TODO: This is the duty cycle in terms of counter cycles. Currently it is set equal to pwmConfig.timerPeriod, which means 100% duty cycle.
     // Pay attention to the duty cycle of a musical note. Multiply the current value with a fraction to achieve that.
-    pwmConfig.dutyCycle   = pwmConfig.timerPeriod;
+    pwmConfig.dutyCycle   = pwmConfig.timerPeriod/2;
 
     // Initialize the one shot timer
     OneShotSWTimer_t noteLength;
