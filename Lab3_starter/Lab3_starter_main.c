@@ -20,19 +20,19 @@ Graphics_Context g_sContext;
 #define ONE_SEC 48000000
 #define DOWN_THRESHOLD  300
 #define UP_THRESHOLD    0x1000
-#define BALL_Y_STEP 10                   // The ball moves in y direction 10 pixesl per step
-#define BALL_TIME_STEP T10MS_IN_US      // We update the location of the ball evey 100 ms
-// The above two numbers result in 10/10ms = 10/0.01s = 1 pixel/sec movement for the ball
+#define BALL_Y_STEP 10
+#define BALL_TIME_STEP T10MS_IN_US
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
 Graphics_Context g_sContext;
 static int down = 0;
 static unsigned vx, vy;
+static int down2 = 0;
 
-void SongChoice(Screen *action){
-    int up2 = 0;
-    int down2 = 0;
+void SongChoice(Screen *action, song_t *song){
+    static int up2 = 0;
+    static int count = 0;
     bool joyStickPushedDown = false;
     bool joyStickPushedUp = false;
     Graphics_clearDisplay(&g_sContext);
@@ -48,6 +48,7 @@ void SongChoice(Screen *action){
     {
            getSampleJoyStick(&vx, &vy);
 
+
            if (vy < DOWN_THRESHOLD)
            {
 
@@ -62,17 +63,8 @@ void SongChoice(Screen *action){
                vy = 0;
            }
 
-           if (down2 == 0 && BoosterpackTopButton_pressed()){
-               action->display = play;
-               rock(action);
-           }
 
-           else if (down2 == 1 && BoosterpackTopButton_pressed()){
-               action->display = play;
-               rock(action);
-           }
-
-           else  if (down2 == 1 && joyStickPushedDown == true){
+           if (down2 == 1 && joyStickPushedDown == true){
                Graphics_clearDisplay(&g_sContext);
                char text[16] = "Pick a song:";
                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -81,7 +73,9 @@ void SongChoice(Screen *action){
                char string2[30] = ">Hokie Song";
                Graphics_drawString(&g_sContext, (int8_t *) string, -1, 0, 20, true);
                Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
+               count++;
                down2 = 0;
+
            }
 
            else if (up2 == 1 && joyStickPushedUp == true){
@@ -95,11 +89,26 @@ void SongChoice(Screen *action){
                Graphics_drawString(&g_sContext, (int8_t *) string2, -1, 0, 40, true);
                up2 = 0;
            }
+
+           if (down2 == 0 && BoosterpackTopButton_pressed()){
+               action->display = play;
+               song->song = Enter_sandman;
+               rock(action, song);
+               down2 = 0;
+           }
+
+           else  if (count != 0 && BoosterpackTopButton_pressed()){
+               action->display = play;
+               song->song = Hokie_fight;
+               rock(action, song);
+               count = 0;
+
+           }
      }
 }
 
  void MoveCircleDown(Screen *action){
-     static menu display = learn;
+
      static unsigned int x1 = 30;
      static unsigned int x2 = 50;
      static unsigned int x3 = 70;
@@ -351,7 +360,7 @@ void DrawRightSide(){
     }
 }
 
-void rock (Screen *action){
+void rock (Screen *action, song_t *song){
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -360,6 +369,8 @@ void rock (Screen *action){
     static OneShotSWTimer_t yMoveTimer;
     InitOneShotSWTimer(&yMoveTimer, &timer0, 500000);
     StartOneShotSWTimer(&yMoveTimer);
+    InitSound();
+    InitSongList();
     DrawLeftSide();
     DrawRightSide();
     DrawFirstFret();
@@ -374,8 +385,11 @@ void rock (Screen *action){
     DrawRedCircle();
     DrawYellowCircle();
     DrawBlueCircle();
-//    PlaySong(enter_sandman);
-//    PlaySong(hokie_fight);
+
+    if (song->song == Enter_sandman)
+        PlaySong(enter_sandman);
+    else if (song->song == Hokie_fight)
+        PlaySong(hokie_fight);
 
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
@@ -522,11 +536,10 @@ int main(void)
 {
 
     Screen action;
+    song_t song;
     action.pos = 0;
     int three_count = 0;
     int up = 0;
-//    static unsigned vx, vy;
-    static int x,y;
 
     static OneShotSWTimer_t yMoveTimer;
 
@@ -537,10 +550,10 @@ int main(void)
     InitOneShotSWTimer(&yMoveTimer, &timer0, 1000000);
     StartOneShotSWTimer(&yMoveTimer);
 
-    InitSound();
-    InitSongList();
-//    PlaySong(enter_sandman);
-//    PlaySong(hokie_fight);
+//    InitSound();
+//    InitSongList();
+////    PlaySong(enter_sandman);
+////    PlaySong(hokie_fight);
 
 
     while(1){
@@ -607,7 +620,7 @@ int main(void)
 //        }
 
         else if (action.display == decision){
-            SongChoice(&action);
+            SongChoice(&action, &song);
         }
     }
     else if (BoosterpackBottomButton_pressed()){
@@ -743,5 +756,3 @@ void ModifyLEDColor(bool leftButtonWasPushed, bool rightButtonWasPushed)
         toggle_BoosterpackLED_blue();
 
 }
-
-
