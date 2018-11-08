@@ -149,77 +149,116 @@ void SongChoice(Screen *action, song_t *song){
          joyStickPushedtoLeft = true;
      }
 
+     else if (vy < DOWN_THRESHOLD)
+     {
+
+       joyStickPushedDown = true;
+       vy = 0;
+     }
+
+     else if (vy > 15000){
+        joyStickPushedUp = true;
+         vy = 0;
+     }
 
      if (OneShotSWTimerExpired(&yMoveTimer))
      {
-         circle_count++;
+         red_circle++;
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+         Graphics_drawLine(&g_sContext,x1, y1, 30, 20);
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+         Graphics_drawCircle(&g_sContext, x1, y1, 4);
+         Graphics_fillCircle(&g_sContext, x1, y1, 4);
+
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+         Graphics_drawLine(&g_sContext,x2, y2, 50, 20);
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+         Graphics_drawCircle(&g_sContext, x2, y2, 4);
+         Graphics_fillCircle(&g_sContext, x2, y2, 4);
 
          StartOneShotSWTimer(&yMoveTimer);
          if (moveToDown)
          {
              y1 = y1 + BALL_Y_STEP;
              y2 = y2 + BALL_Y_STEP;
-             y3 = y3 + BALL_Y_STEP;
-             y4 = y4 + BALL_Y_STEP;
-             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-             Graphics_drawLine(&g_sContext,x1, y1, 30, 20);
-             if (circle_count == 2){
+             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+             Graphics_fillCircle(&g_sContext, x1, y1, 4);
+             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+             Graphics_fillCircle(&g_sContext, x1, y1, 2);
+             if(red_circle >= 10){
+                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+                 Graphics_fillCircle(&g_sContext, x2, y2, 4);
+                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+                 Graphics_fillCircle(&g_sContext, x2, y2, 2);
 
-                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-                 Graphics_drawCircle(&g_sContext, x1, y1, 4);
-                 //circle_count = 0;
-                 red_circle++;
-                 yellow_circle++;
-                 blue_circle++;
+             }
+             if (y1 == 110 || y2 ==110){
+                 moveToDown = false;
+                 if (y1==110 && joyStickPushedtoLeft == true){
+                            action->score++;
+                            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+                            Graphics_fillCircle(&g_sContext, x1, y1, 4);
+                            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                            Graphics_fillCircle(&g_sContext, x1, y1, 2);
+                            y1 = 20;
+                            Point(action);
+                 }
 
-                 if (red_circle == 2){
-                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-                     Graphics_drawLine(&g_sContext,x2, y2, 50, 20);
+                 else if (y2 ==110 && joyStickPushedUp == true){
+                     action->score++;
                      Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-                     Graphics_drawCircle(&g_sContext, x2, y2, 4);
-                     red_circle = 0;
-                     yellow_circle++;
-                 }
-
-                 if (yellow_circle == 1){
+                     Graphics_fillCircle(&g_sContext, x2, y2, 4);
                      Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-                     Graphics_drawLine(&g_sContext,x3, y3, 70, 20);
-                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
-                     Graphics_drawCircle(&g_sContext, x3, y3, 4);
-                     yellow_circle = 0;
-                     blue_circle++;
-                 }
+                     Graphics_fillCircle(&g_sContext, x2, y2, 2);
+                     y2 = 20;
+                     Point(action);
 
-                 if (blue_circle == 2){
-                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-                     Graphics_drawLine(&g_sContext,x4, y4, 90, 20);
-                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
-                     Graphics_drawCircle(&g_sContext, x4, y4, 4);
-                     blue_circle = 0;
+//                     if(y2 ==110 && joyStickPushedUp){
+//                         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+//                         Graphics_fillCircle(&g_sContext, x2, y2, 4);
+//                         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+//                         Graphics_fillCircle(&g_sContext, x2, y2, 2);
+//                         action->score--;
+//                         Point(action);
+//                         y2 = 20;
+//                     }
                  }
              }
 
-             if (joyStickPushedtoLeft == true && y1 == 110){
-                 action->score++;
-                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
-                 Graphics_fillCircle(&g_sContext, x1, y1, 4);
-                 Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-                 Graphics_fillCircle(&g_sContext, x1, y1, 2);
-                 circle_count = 0;
-                 y1 = 20;
-                 Point(action);
-                 if (joyStickPushedtoLeft && y1 == 110)
-                     moveToDown = false;
+             else if ((y1 == 110 && joyStickPushedtoLeft == false)  || (y2 ==110 && joyStickPushedUp ==false)){
+                     action->score--;
+                     Point(action);
              }
+                 if(y2 ==110 && joyStickPushedUp == false){
+                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+                     Graphics_fillCircle(&g_sContext, x2, y2, 4);
+                     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                     Graphics_fillCircle(&g_sContext, x2, y2, 2);
+                     action->score--;
+                     Point(action);
+                     y2 = 20;
+             }
+
+         }
+         else
+         {
+             y1 = 20;
+             y2 = 20;
+             if (y1 < 110 || y2<110)
+                 moveToDown = true;
          }
 
-         else {
-             action->lose++;
-             if (action->lose == 3)
-             EndGame(action);
-         }
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
+         Graphics_fillCircle(&g_sContext, x1, y1, 4);
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+         Graphics_fillCircle(&g_sContext, x2, y2, 4);
+
      }
  }
+
+
+
+
 void Point(Screen *action){
     char text[16] = "";
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
