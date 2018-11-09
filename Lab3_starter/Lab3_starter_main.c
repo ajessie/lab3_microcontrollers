@@ -31,7 +31,7 @@ static int down = 0;
 static unsigned vx, vy;
 static int down2 = 0;
 
-void SongChoice(Screen *action, song_t *song){                                                           //This function is the display screen for the user to select a song to play
+void SongChoice(Screen *action, song_t *song){                                                          //This function is the display screen for the user to select a song to play
     static int up2 = 0;
     static int count = 0;
     bool joyStickPushedDown = false;
@@ -47,7 +47,7 @@ void SongChoice(Screen *action, song_t *song){                                  
 
     while(!BoosterpackTopButton_pressed())
     {
-           getSampleJoyStick(&vx, &vy);                                         //Check if the user has moved the joystick
+           getSampleJoyStick(&vx, &vy);                                                                 //Check if the user has moved the joystick
            if (vy < DOWN_THRESHOLD)
            {
 
@@ -437,7 +437,7 @@ void MoveBlueCircle(Screen *action){                                            
              Graphics_fillCircle(&g_sContext, x1, y1, 2);
              if (y1 == 110){
                  moveToDown = false;
-                 if (y1==110 && joyStickPushedtoLeft == true && BoosterpackTopButton_pressed()){                //this is how we will denote the seq for green note/string being played
+                 if (y1==110 && joyStickPushedtoLeft == true && BoosterpackTopButton_pressed()){             //this is how we will denote the seq for green note/string being played
                             action->score++;
                             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
                             Graphics_fillCircle(&g_sContext, x1, y1, 4);
