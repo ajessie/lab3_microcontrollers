@@ -185,7 +185,7 @@ void MoveRedCircle(Screen *action){                                             
             Graphics_fillCircle(&g_sContext, x2, y2, 2);
             if (y2 == 110){
                 moveToDown = false;
-                if (y2==110 && joyStickPushedDown == true && BoosterpackTopButton_pressed()){
+                if (y2==110 && joyStickPushedDown == true && BoosterpackTopButton_pressed()){           //this is how we will denote the correct seq for red note being played
                            action->score++;
                            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
                            Graphics_fillCircle(&g_sContext, x2, y2, 4);
@@ -305,7 +305,7 @@ void MoveBlueCircle(Screen *action){                                            
             Graphics_fillCircle(&g_sContext, x4, y4, 2);
             if (y4 == 110){
                 moveToDown = false;
-                if (y4==110 && joyStickPushedtoRight == true && BoosterpackTopButton_pressed()){
+                if (y4==110 && joyStickPushedtoRight == true && BoosterpackTopButton_pressed()){            //this is how we will denote the seq. for blue string/note being played
                            action->score++;
                            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
                            Graphics_fillCircle(&g_sContext, x4, y4, 4);
@@ -407,7 +407,7 @@ void MoveBlueCircle(Screen *action){                                            
      if (OneShotSWTimerExpired(&yMoveTimer))
      {
 
-         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);                                            //this will redraw the fret lines
          Graphics_drawLine(&g_sContext,x1, y1, 30, 20);
          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
          Graphics_drawCircle(&g_sContext, x1, y1, 4);
@@ -419,7 +419,7 @@ void MoveBlueCircle(Screen *action){                                            
          Graphics_drawCircle(&g_sContext, x1, y1, 4);
          Graphics_fillCircle(&g_sContext, x1, y1, 4);
 
-         StartOneShotSWTimer(&yMoveTimer);
+         StartOneShotSWTimer(&yMoveTimer);                                                                          //restart the timer
          if (moveToDown)
          {
              red_circle++;
@@ -437,7 +437,7 @@ void MoveBlueCircle(Screen *action){                                            
              Graphics_fillCircle(&g_sContext, x1, y1, 2);
              if (y1 == 110){
                  moveToDown = false;
-                 if (y1==110 && joyStickPushedtoLeft == true && BoosterpackTopButton_pressed()){
+                 if (y1==110 && joyStickPushedtoLeft == true && BoosterpackTopButton_pressed()){                //this is how we will denote the seq for green note/string being played
                             action->score++;
                             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
                             Graphics_fillCircle(&g_sContext, x1, y1, 4);
@@ -477,7 +477,7 @@ void MoveBlueCircle(Screen *action){                                            
     }
  }
 
- void MoveYellowCircle(Screen *action){
+ void MoveYellowCircle(Screen *action){                                                                        //move the yellow notes down the screen
      static unsigned int x1 = 30;
      static unsigned int x2 = 50;
      static unsigned int x3 = 70;
@@ -568,7 +568,7 @@ void MoveBlueCircle(Screen *action){                                            
              Graphics_fillCircle(&g_sContext, x3, y3, 2);
              if (y3 == 110){
                  moveToDown = false;
-                 if (y3==110 && joyStickPushedUp == true && BoosterpackTopButton_pressed()){
+                 if (y3==110 && joyStickPushedUp == true && BoosterpackTopButton_pressed()){                //denote the seq to have the yellow string played
                             action->score++;
                             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
                             Graphics_fillCircle(&g_sContext, x3, y3, 4);
@@ -609,42 +609,42 @@ void MoveBlueCircle(Screen *action){                                            
  }
 
 
-void Point(Screen *action){
+void Point(Screen *action){                                                             //this function will update the score for the player
     char text[16] = "";
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     sprintf(text, "%u", action->score);
     Graphics_drawString(&g_sContext, (int8_t *) text, -1, 100, 2, true);
 }
 
-void DrawGreenCircle(){
+void DrawGreenCircle(){                                                                //Draw the green circle at bottom of the screen
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
     Graphics_fillCircle(&g_sContext, 30, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_fillCircle(&g_sContext, 30, 110, 4);
 }
 
-void DrawRedCircle(){
+void DrawRedCircle(){                                                                   //Draw Red circle at bottom of screen
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
     Graphics_fillCircle(&g_sContext, 50, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_fillCircle(&g_sContext, 50, 110, 4);
 }
 
-void DrawYellowCircle(){
+void DrawYellowCircle(){                                                                //Draw yellow circle at bottom of page
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
     Graphics_fillCircle(&g_sContext, 70, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_fillCircle(&g_sContext, 70, 110, 4);
 }
 
-void DrawBlueCircle(){
+void DrawBlueCircle(){                                                                  //Draw Blue circle at bottom of page
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
     Graphics_fillCircle(&g_sContext, 90, 110, 6);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_fillCircle(&g_sContext, 90, 110, 4);
 }
 
-void DrawVerticalOne(){
+void DrawVerticalOne(){                                                                 //Draw vertial lines
     uint16_t x_pos = 30, y_pos = 20;
     int i;
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -687,7 +687,7 @@ void DrawVerticalFour(){
     }
 
 }
-
+/////////////////////Draw the frets/////////////////////////
 void DrawFirstFret(){
     uint16_t x_pos = 6, y_pos = 50;
     int i;
@@ -749,7 +749,7 @@ void DrawRightSide(){
     }
 }
 
-void rock (Screen *action, song_t *song){
+void rock (Screen *action, song_t *song){                                                //This is the function that handles game play
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -775,7 +775,7 @@ void rock (Screen *action, song_t *song){
     DrawYellowCircle();
     DrawBlueCircle();
 
-    if (song->song == Enter_sandman)
+    if (song->song == Enter_sandman)                                                                    //Select betwwen the different songs
         PlaySong(enter_sandman);
     else if (song->song == Hokie_fight)
         PlaySong(hokie_fight);
@@ -801,7 +801,7 @@ void EndGame(Screen *action){
         action->display = endGame;
 }
 
-void Splash (){
+void Splash (){                                                                                             //Initial screen displayed for three seconds before main menu display
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     char Name[22] = "Jessie Acfalle";
@@ -810,7 +810,7 @@ void Splash (){
     Graphics_drawString(&g_sContext, (int8_t *) Game, -1, 0, 80, true);
 }
 
-void Menu (Screen *action){
+void Menu (Screen *action){                                                                                //This is the main menu
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -823,7 +823,7 @@ void Menu (Screen *action){
     action->display = learn;
 }
 
-void howToPlay(Screen *action){
+void howToPlay(Screen *action){                                                                             //How to play screen
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -836,7 +836,7 @@ void howToPlay(Screen *action){
     Graphics_drawString(&g_sContext, (int8_t *) info2, -1, 0, 64, true);
     Graphics_drawString(&g_sContext, (int8_t *) info4, -1, 0, 80, true);
 }
-
+////////////Handle the different positions during main menu screen/////////////////////
 void Down(Screen *action){
     Graphics_clearDisplay(&g_sContext);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
@@ -960,11 +960,11 @@ int main(void)
             Menu(&action);
         }
     }
-    getSampleJoyStick(&vx, &vy);
+    getSampleJoyStick(&vx, &vy);                                            //Get the joystick sample data
     bool joyStickPushedDown = false;
     bool joyStickPushedUp = false;
 
-    if (vy < DOWN_THRESHOLD)
+    if (vy < DOWN_THRESHOLD)                                                //Handle the different joystick movements and update
     {
 
       joyStickPushedDown = true;
@@ -1007,9 +1007,6 @@ int main(void)
         if (action.display == learn){
             howToPlay(&action);
         }
-//        else if (action.display == endGame){
-//            EndGame(&action);
-//        }
 
         else if (action.display == decision){
             SongChoice(&action, &song);
