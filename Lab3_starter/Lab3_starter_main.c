@@ -22,6 +22,7 @@ Graphics_Context g_sContext;
 #define UP_THRESHOLD    0x1000
 #define BALL_Y_STEP 10
 #define BALL_TIME_STEP T10MS_IN_US
+#define RIGHT_THRESHOLD 15000
 
 extern song_t enter_sandman;
 extern song_t hokie_fight;
@@ -30,7 +31,7 @@ static int down = 0;
 static unsigned vx, vy;
 static int down2 = 0;
 
-void SongChoice(Screen *action, song_t *song){
+void SongChoice(Screen *action, song_t *song){                                                           //This function is the display screen for the user to select a song to play
     static int up2 = 0;
     static int count = 0;
     bool joyStickPushedDown = false;
@@ -46,9 +47,7 @@ void SongChoice(Screen *action, song_t *song){
 
     while(!BoosterpackTopButton_pressed())
     {
-           getSampleJoyStick(&vx, &vy);
-
-
+           getSampleJoyStick(&vx, &vy);                                         //Check if the user has moved the joystick
            if (vy < DOWN_THRESHOLD)
            {
 
@@ -64,7 +63,7 @@ void SongChoice(Screen *action, song_t *song){
            }
 
 
-           if (down2 == 1 && joyStickPushedDown == true){
+           if (down2 == 1 && joyStickPushedDown == true){                                               //Below are the different display screens according to the users joystick movement
                Graphics_clearDisplay(&g_sContext);
                char text[16] = "Pick a song:";
                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -107,7 +106,7 @@ void SongChoice(Screen *action, song_t *song){
      }
 }
 
-void MoveRedCircle(Screen *action){
+void MoveRedCircle(Screen *action){                                                                       //Move the red  circle
     static unsigned int x1 = 30;
     static unsigned int x2 = 50;
     static unsigned int x3 = 70;
@@ -148,6 +147,10 @@ void MoveRedCircle(Screen *action){
         joyStickPushedtoLeft = true;
     }
 
+    else if (vx < RIGHT_THRESHOLD ){
+        joyStickPushedtoRight = true;
+    }
+
     else if (vy < DOWN_THRESHOLD)
     {
 
@@ -167,7 +170,7 @@ void MoveRedCircle(Screen *action){
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
         Graphics_drawLine(&g_sContext,x2, y2, 50, 20);
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-       Graphics_drawCircle(&g_sContext, x2, y2, 4);
+        Graphics_drawCircle(&g_sContext, x2, y2, 4);
         Graphics_fillCircle(&g_sContext, x2, y2, 4);
 
         StartOneShotSWTimer(&yMoveTimer);
@@ -182,7 +185,7 @@ void MoveRedCircle(Screen *action){
             Graphics_fillCircle(&g_sContext, x2, y2, 2);
             if (y2 == 110){
                 moveToDown = false;
-                if (y2==110 && joyStickPushedDown == true){
+                if (y2==110 && joyStickPushedDown == true && BoosterpackTopButton_pressed()){
                            action->score++;
                            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
                            Graphics_fillCircle(&g_sContext, x2, y2, 4);
@@ -192,7 +195,7 @@ void MoveRedCircle(Screen *action){
                            Point(action);
                 }
 
-                else if (y2 == 110 && joyStickPushedDown == false){
+                else if (y2 == 110 && joyStickPushedDown == false && !BoosterpackTopButton_pressed()){
                     if(action->score ==0){
                         action->score = 0;
                         Point(action);
@@ -220,12 +223,129 @@ void MoveRedCircle(Screen *action){
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
         Graphics_fillCircle(&g_sContext, x2, y2, 2);
    }
-
-
-
 }
 
- void MoveCircleDown(Screen *action){
+void MoveBlueCircle(Screen *action){                                                                    //Move the Blue circle
+    static unsigned int x1 = 30;
+    static unsigned int x2 = 50;
+    static unsigned int x3 = 70;
+    static unsigned int x4 = 90;
+    static unsigned int y1 = 20;
+    static unsigned int y2 = 20;
+    static unsigned int y3 = 20;
+    static unsigned int y4 = 20;
+
+    static unsigned vx, vy;
+    static bool moveToDown = true;
+    static int circle_count = 0;
+    static int red_circle = 0;
+    static int blue_circle = 0;
+    static int yellow_circle = 0;
+
+    static OneShotSWTimer_t yMoveTimer;
+
+    getSampleJoyStick(&vx, &vy);
+    bool joyStickPushedtoRight = false;
+    bool joyStickPushedtoLeft  = false;
+    bool joyStickPushedDown    = false;
+    bool joyStickPushedUp      = false;
+
+    static bool init = true;
+    if (init)
+    {
+        InitOneShotSWTimer(&yMoveTimer,
+                           &timer0,
+                           BALL_TIME_STEP);
+        StartOneShotSWTimer(&yMoveTimer);
+
+        init = false;
+    }
+
+    if (vx < LEFT_THRESHOLD)
+    {
+        joyStickPushedtoLeft = true;
+    }
+
+    else if (vx < RIGHT_THRESHOLD ){
+        joyStickPushedtoRight = true;
+
+    }
+
+    else if (vy < DOWN_THRESHOLD)
+    {
+
+      joyStickPushedDown = true;
+      vy = 0;
+    }
+
+    else if (vy > 15000){
+       joyStickPushedUp = true;
+        vy = 0;
+    }
+
+    if (OneShotSWTimerExpired(&yMoveTimer))
+    {
+
+        red_circle++;
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        Graphics_drawLine(&g_sContext,x4, y4, 90, 20);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+        Graphics_drawCircle(&g_sContext, x4, y4, 4);
+        Graphics_fillCircle(&g_sContext, x4, y4, 4);
+
+        StartOneShotSWTimer(&yMoveTimer);
+        if (moveToDown)
+        {
+            red_circle++;
+            y4 = y4 + 15;
+
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+            Graphics_fillCircle(&g_sContext, x4, y4, 4);
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+            Graphics_fillCircle(&g_sContext, x4, y4, 2);
+            if (y4 == 110){
+                moveToDown = false;
+                if (y4==110 && joyStickPushedtoRight == true && BoosterpackTopButton_pressed()){
+                           action->score++;
+                           Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+                           Graphics_fillCircle(&g_sContext, x4, y4, 4);
+                           Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                           Graphics_fillCircle(&g_sContext, x4, y4, 2);
+                           y4 = 20;
+                           Point(action);
+                }
+
+                else if (y4 == 110 && joyStickPushedtoLeft == false && !BoosterpackTopButton_pressed()){
+                    if(action->score ==0){
+                        action->score = 0;
+                        Point(action);
+                    }
+
+                    else if (action->score !=0){
+                        action->score++;
+                        Point(action);
+                    }
+                }
+            }
+        }
+
+        else
+        {
+            y4 = 20;
+            if (y4 < 110)
+                moveToDown = true;
+        }
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        Graphics_drawLine(&g_sContext,x4, y4, 90, 20);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+        Graphics_drawCircle(&g_sContext, x4, y4, 2);
+        Graphics_fillCircle(&g_sContext, x4, y4, 2);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLUE);
+        Graphics_fillCircle(&g_sContext, x4, y4, 2);
+   }
+}
+
+ void MoveGreenCircle(Screen *action){                                                             //Move the green notes down the screen
 
      static unsigned int x1 = 30;
      static unsigned int x2 = 50;
@@ -267,6 +387,11 @@ void MoveRedCircle(Screen *action){
          joyStickPushedtoLeft = true;
      }
 
+     else if (vx < RIGHT_THRESHOLD ){
+         joyStickPushedtoRight = true;
+
+     }
+
      else if (vy < DOWN_THRESHOLD)
      {
 
@@ -289,10 +414,10 @@ void MoveRedCircle(Screen *action){
          Graphics_fillCircle(&g_sContext, x1, y1, 4);
 
          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-         Graphics_drawLine(&g_sContext,x2, y2, 50, 20);
+         Graphics_drawLine(&g_sContext,x1, y1, 30, 20);
          Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-         Graphics_drawCircle(&g_sContext, x2, y2, 4);
-         Graphics_fillCircle(&g_sContext, x2, y2, 4);
+         Graphics_drawCircle(&g_sContext, x1, y1, 4);
+         Graphics_fillCircle(&g_sContext, x1, y1, 4);
 
          StartOneShotSWTimer(&yMoveTimer);
          if (moveToDown)
@@ -312,7 +437,7 @@ void MoveRedCircle(Screen *action){
              Graphics_fillCircle(&g_sContext, x1, y1, 2);
              if (y1 == 110){
                  moveToDown = false;
-                 if (y1==110 && joyStickPushedtoLeft == true){
+                 if (y1==110 && joyStickPushedtoLeft == true && BoosterpackTopButton_pressed()){
                             action->score++;
                             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_GREEN);
                             Graphics_fillCircle(&g_sContext, x1, y1, 4);
@@ -322,7 +447,7 @@ void MoveRedCircle(Screen *action){
                             Point(action);
                  }
 
-                 else if (y1 == 110 && joyStickPushedtoLeft == false){
+                 else if (y1 == 110 && joyStickPushedtoLeft == false && !BoosterpackTopButton_pressed()){
                      if (action->score == 0){
                          action->score = 0;
                          Point(action);
@@ -393,6 +518,11 @@ void MoveRedCircle(Screen *action){
          joyStickPushedtoLeft = true;
      }
 
+     else if (vx < RIGHT_THRESHOLD ){
+         joyStickPushedtoRight = true;
+
+     }
+
      else if (vy < DOWN_THRESHOLD)
      {
 
@@ -438,7 +568,7 @@ void MoveRedCircle(Screen *action){
              Graphics_fillCircle(&g_sContext, x3, y3, 2);
              if (y3 == 110){
                  moveToDown = false;
-                 if (y3==110 && joyStickPushedUp == true){
+                 if (y3==110 && joyStickPushedUp == true && BoosterpackTopButton_pressed()){
                             action->score++;
                             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_YELLOW);
                             Graphics_fillCircle(&g_sContext, x3, y3, 4);
@@ -448,7 +578,7 @@ void MoveRedCircle(Screen *action){
                             Point(action);
                  }
 
-                 else if (y3 == 110 && joyStickPushedUp == false){
+                 else if (y3 == 110 && joyStickPushedUp == false && !BoosterpackTopButton_pressed()){
                      if (action->score == 0){
                          action->score = 0;
                          Point(action);
@@ -652,10 +782,11 @@ void rock (Screen *action, song_t *song){
 
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
+            StartOneShotSWTimer(&yMoveTimer);
             MoveCircleDown(action);
             MoveRedCircle(action);
             MoveYellowCircle(action);
-            StartOneShotSWTimer(&yMoveTimer);
+            MoveBlueCircle(action);
         }
     }
 
