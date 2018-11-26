@@ -8,13 +8,14 @@
 #include <ti/grlib/grlib.h>
 #include "LcdDriver/Crystalfontz128x128_ST7735.h"
 #include "Timer32_HAL.h"
+Graphics_Context g_sContext;
 
 // 100ms in us unit is 100,000
-#define T100MS_IN_US 100000
+#define T2000MS_IN_US 2000
 
 
 #define BALL_Y_STEP 10                   // The ball moves in y direction 10 pixesl per step
-#define BALL_TIME_STEP T100MS_IN_US      // We update the location of the ball evey 100 ms
+#define BALL_TIME_STEP T2000MS_IN_US      // We update the location of the ball evey 100 ms
 // The above two numbers result in 10/100ms = 10/0.1s = 100 pixel/sec movement for the ball
 
 extern HWTimer_t timer0, timer1;
@@ -140,14 +141,12 @@ void InitFonts() {
 
 void InitGraphics(Graphics_Context *g_sContext_p) {
 
-    Graphics_initContext(g_sContext_p,
+    InitFonts();
+    Graphics_initContext(&g_sContext,
                          &g_sCrystalfontz128x128,
                          &g_sCrystalfontz128x128_funcs);
-    Graphics_setForegroundColor(g_sContext_p, GRAPHICS_COLOR_YELLOW);
-    Graphics_setBackgroundColor(g_sContext_p, GRAPHICS_COLOR_BLUE);
-    Graphics_setFont(g_sContext_p, &g_sFontCmtt12);
-
-    InitFonts();
-
-    Graphics_clearDisplay(g_sContext_p);
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+    GrContextFontSet(&g_sContext, &g_sFontCmtt16);
+    Graphics_clearDisplay(&g_sContext);
 }
