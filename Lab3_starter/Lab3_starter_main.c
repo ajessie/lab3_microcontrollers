@@ -783,7 +783,7 @@ void rock (Screen *action, song_t *song){                                       
     while(1){
         if (OneShotSWTimerExpired(&yMoveTimer)){
             StartOneShotSWTimer(&yMoveTimer);
-            MoveCircleDown(action);
+            //MoveCircleDown(action);
             MoveRedCircle(action);
             MoveYellowCircle(action);
             MoveBlueCircle(action);

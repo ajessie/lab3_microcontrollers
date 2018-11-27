@@ -100,11 +100,11 @@ void PlayNote(song_note_t songNote) {
     // TODO: Choose the period of the PWM in terms of number of counter cycles. Currently, it is set to SYSTEMCLOCK which is 48M
     // You need to generate a different PWM for each note, pay attention to the clock divider you chose earlier.
     // Hint: you need to incorporate toneFreq to complete this part.
-    pwmConfig.timerPeriod = SYSTEMCLOCK/64/toneFreq[songNote];
+    pwmConfig.timerPeriod = SYSTEMCLOCK/64/toneFreq[songNote.note_name];
 
     // TODO: This is the duty cycle in terms of counter cycles. Currently it is set equal to pwmConfig.timerPeriod, which means 100% duty cycle.
     // Pay attention to the duty cycle of a musical note. Multiply the current value with a fraction to achieve that.
-    pwmConfig.dutyCycle   = pwmConfig.timerPeriod/2;
+    pwmConfig.dutyCycle   = pwmConfig.timerPeriod;
 
     // Initialize the one shot timer
     OneShotSWTimer_t noteLength;
